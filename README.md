@@ -10,50 +10,47 @@ Docker Compose **MING stack** (Mosquitto MQTT, InfluxDB, Node-RED, Grafana) for 
 - ✅ Provisioning & env secrets
 
 ## 🛠️ Prerequisites
-- [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
-- AXIS D6310 with MQTT enabled: `[http://[camera-ip]/environmental-sensor/index.html#/system/mqtt/publication]
+- Install and setup up [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
+- AXIS D6310 or two
 
-## 🚀 Quick Start
-```bash
-git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization
-cd Axis_AQS_Data_Visualization
-cp .env.example .env  # Edit creds
-# Add mosquitto.conf (see below)
-```
-
-**Portainer Deploy**:
+**MING stack Portainer Deploy**:
+https://your-host:9443/
 1. Stacks → **+ Add stack**
 2. Name: `axis-airquality`
-3. **Web editor** → Paste `docker-compose.ming.yml`
+3. **Web editor** → Paste contents of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
 4. **Deploy stack**
 
 **Access**:
-- Grafana: `http://your-host:3000` (admin/pass from .env)
+- Grafana: `http://your-host:3000` (admin/password123)
 - Node-RED: `http://your-host:1880`
-- InfluxDB: `http://your-host:8086`
+- InfluxDB: `http://your-host:8086` (admin/password123)
 
 ## 🔧 Configuration
 
-### .env
-```bash
-INFLUXDB_ADMIN_USER=admin
-INFLUXDB_ADMIN_PASSWORD=SecurePass123!
-GRAFANA_ADMIN_USER=admin
-GRAFANA_ADMIN_PASSWORD=SecurePass123!
-```
-
-### mosquitto.conf
-```
-persistence true
-persistence_location /mosquitto/data/
-listener 1883
-allow_anonymous true
-```
+### D6310
+- Update Firmware to latest
+- http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication
+- Host= you computers IP
+- Save and connect
+- + Add Condition
+- Condition = Air quality monitoring active
+- Add
+- Take note of device serial for next step
 
 ### Node-RED Flow
-- Auto-imports from `node-red/flows.json`
-- MQTT topic: `axis/[serial]/event/tns:axis/AirQualityMonitor/Metadata/#`
-- Output: InfluxDB `airquality` bucket (`sensor_name="D6310"`)
+`http://your-host:1880`
+- Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
+- Double click Axis D6310 MQTT node
+- Change serial number in Topic to your device serial
+- Open InfluxDB: `http://your-host:8086` (admin/password123)
+- Click Load Data => API Tokens => Generate API Token => All Access API Token
+- Name it anything
+- Manaul copy the token (copy to clipboard doesnt always work)
+- Back in Node Red double click "InfluxDB Axis AQ" node
+- Click pencil next to "Server"
+- Paste Token in Token field
+- Click Update => Done => Deploy
+
 
 ## 📊 Grafana Queries (1m Resolution)
 
