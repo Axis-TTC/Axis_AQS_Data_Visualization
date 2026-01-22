@@ -1,7 +1,5 @@
 # Axis D6310 Air Quality MING Stack 🚀
 
-[
-
 Docker Compose **MING stack** (Mosquitto MQTT, InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize at **1m resolution** in Grafana, detect **occupancy** (CO2>800ppm) & **cleaning** (PM spikes). Perfect for smart buildings/IoT.
 
 ## 📦 Features
