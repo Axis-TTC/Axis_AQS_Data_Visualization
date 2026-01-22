@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     ports:
       - "1883:1883"
+    volumes:  # Added for persistence
+      - mosquitto-data:/mosquitto
     networks:
       - ming-net
     command: >
@@ -26,6 +28,8 @@ services:
       DOCKER_INFLUXDB_INIT_BUCKET: airquality
     networks:
       - ming-net
+    volumes:
+      - influxdb-data:/var/lib/influxdb2  # Changed to influxdb-data (hyphen) and correct path
 
   node-red:
     image: nodered/node-red:latest
@@ -34,6 +38,8 @@ services:
       - "1880:1880"
     networks:
       - ming-net
+    volumes:
+      - node-red-data:/data  # Changed to node-red-data (hyphen)
 
   grafana:
     image: grafana/grafana:latest
@@ -45,7 +51,15 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: password123
     networks:
       - ming-net
+    volumes:
+      - grafana-data:/var/lib/grafana  # Changed to grafana-data (hyphen)
 
 networks:
   ming-net:
     driver: bridge
+
+volumes:
+  mosquitto-data:
+  influxdb-data:
+  node-red-data:
+  grafana-data:
