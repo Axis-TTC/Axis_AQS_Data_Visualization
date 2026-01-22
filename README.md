@@ -76,6 +76,7 @@ Grafana: `http://your-host:3000` (admin/password123)
 
 ### Temperature
 - Title: Temperature
+- Unit: Temperature → Celsius (°C)
 - Paste below into query field
 
 ```
@@ -91,6 +92,7 @@ from(bucket: "airquality")
   
 ### Humidity
 - Title: Humidity
+- Unit: Misc → Percent (0-100)
 - Paste below into query field
 
 ```
@@ -107,6 +109,7 @@ from(bucket: "airquality")
 
 ### VOC
 - Title: VOC
+- Unit: Concentraion → parts-per-million (ppm)
 - Paste below into query field
 
 ```
@@ -123,6 +126,7 @@ from(bucket: "airquality")
 
 ### CO2
 - Title: CO2
+- Units: Concentraion → parts-per-million (ppm)
 - Paste below into query field
 
 ```
@@ -139,6 +143,7 @@ from(bucket: "airquality")
 
 ### PM1, PM2.5, PM4, PM10
 - Title: PM1, PM2.5, PM4, PM10
+- Units: Concentraion → micrograms per cubic meter (µg/m³)
 - Paste below into query field
 
 ```
