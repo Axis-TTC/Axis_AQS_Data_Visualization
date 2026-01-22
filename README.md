@@ -1,21 +1,21 @@
-# Axis D6310 Air Quality MING Stack ðŸš€
+# Axis D6310 Air Quality MING Stack 🚀
 
-[![Portainer Deploy](https://img.shields.io/badge/Deploy-Portainer-blue?logo=docker)](https://docs.portainer.io/)
+[
 
 Docker Compose **MING stack** (Mosquitto MQTT, InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize at **1m resolution** in Grafana, detect **occupancy** (CO2>800ppm) & **cleaning** (PM spikes). Perfect for smart buildings/IoT.
 
-## ðŸ“¦ Features
-- âœ… One-click Portainer stack deploy
-- âœ… Node-RED MQTT flows (Axis â†’ Influx)
-- âœ… Grafana dashboards + Flux queries (no truncation)
-- âœ… Pattern detection (occupancy/cleaning)
-- âœ… Provisioning & env secrets
+## 📦 Features
+- ✅ One-click Portainer stack deploy
+- ✅ Node-RED MQTT flows (Axis → Influx)
+- ✅ Grafana dashboards + Flux queries (no truncation)
+- ✅ Pattern detection (occupancy/cleaning)
+- ✅ Provisioning & env secrets
 
-## ðŸ› ï¸ Prerequisites
+## 🛠️ Prerequisites
 - [Docker](https://docker.com) + [Portainer](https://portainer.io)
 - AXIS D6310 MQTT enabled: `http://[camera-ip]/axis-cgi/mqtt.cgi`
 
-## ðŸš€ Quick Start
+## 🚀 Quick Start
 ```bash
 git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization
 cd Axis_AQS_Data_Visualization
@@ -24,9 +24,9 @@ cp .env.example .env  # Edit creds
 ```
 
 **Portainer Deploy**:
-1. Stacks â†’ **+ Add stack**
+1. Stacks → **+ Add stack**
 2. Name: `axis-airquality`
-3. **Web editor** â†’ Paste `docker-compose.ming.yml`
+3. **Web editor** → Paste `docker-compose.ming.yml`
 4. **Deploy stack**
 
 **Access**:
@@ -34,7 +34,7 @@ cp .env.example .env  # Edit creds
 - Node-RED: `http://your-host:1880`
 - InfluxDB: `http://your-host:8086`
 
-## ðŸ”§ Configuration
+## 🔧 Configuration
 
 ### .env
 ```bash
@@ -57,7 +57,7 @@ allow_anonymous true
 - MQTT topic: `axis/[serial]/event/tns:axis/AirQualityMonitor/Metadata/#`
 - Output: InfluxDB `airquality` bucket (`sensor_name="D6310"`)
 
-## ðŸ“Š Grafana Queries (1m Resolution)
+## 📊 Grafana Queries (1m Resolution)
 
 **Temperature**:
 ```flux
@@ -70,7 +70,7 @@ from(bucket: "airquality")
 ```
 **Panel Settings**: Max data points=50000, Min interval=1m
 
-## ðŸŽ¯ Pattern Detection
+## 🎯 Pattern Detection
 
 **Occupancy (CO2 Alert)**:
 ```flux
@@ -90,42 +90,42 @@ from(bucket: "airquality")
 |> map(fn:(r)=>({r... cleaning: math.abs(r._value) > 10}))
 ```
 
-## ðŸ› Troubleshooting
+## 🐛 Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| **Too many datapoints** | Panel â†’ Query â†’ Max data points: `50000` |
+| **Too many datapoints** | Panel → Query → Max data points: `50000` |
 | **No MQTT data** | Check AXIS MQTT config, Node-RED logs |
 | **Influx empty** | Verify bucket `airquality`, Node-RED Influx node |
 | **Grafana no data** | Check provisioning, API token |
 
 **Logs**: `docker logs axis-airquality_[service]`
 
-## ðŸ—ï¸ Stack Components
+## 🏗️ Stack Components
 ```
-AXIS D6310 â”€MQTTâ†’ Mosquitto â†’ Node-RED â†’ InfluxDB â†’ Grafana
-                         â†“
+AXIS D6310 ─MQTT→ Mosquitto → Node-RED → InfluxDB → Grafana
+                         ↓
                    Pattern Detection
 ```
 
-## ðŸ“ Repository Structure
+## 📁 Repository Structure
 ```
-â”œâ”€â”€ docker-compose.ming.yml     # Main stack
-â”œâ”€â”€ .env.example               # Secrets
-â”œâ”€â”€ mosquitto.conf             # MQTT config
-â”œâ”€â”€ node-red/flows.json        # Your flow
-â”œâ”€â”€ grafana/
-â”‚   â”œâ”€â”€ provisioning/
-â”‚   â””â”€â”€ dashboards/
-â””â”€â”€ patterns/                  # Flux anomaly queries
+├── docker-compose.ming.yml     # Main stack
+├── .env.example               # Secrets
+├── mosquitto.conf             # MQTT config
+├── node-red/flows.json        # Your flow
+├── grafana/
+│   ├── provisioning/
+│   └── dashboards/
+└── patterns/                  # Flux anomaly queries
 ```
 
-## ðŸ¤ Contributing
+## 🤝 Contributing
 1. Fork & PR
 2. Add your dashboard JSONs
 3. New patterns welcome!
 
-## ðŸ“„ License
+## 📄 License
 MIT - See LICENSE
 
-**â­ Star if useful!** Questions? Open an issue.
+**⭐ Star if useful!** Questions? Open an issue.
