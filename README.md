@@ -1,19 +1,17 @@
 # Axis D6310 Air Quality MING Stack 🚀
 
-Docker Compose **MING stack** (Mosquitto MQTT, InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize at **1m resolution** in Grafana, detect **occupancy** (CO2>800ppm) & **cleaning** (PM spikes). Perfect for smart buildings/IoT.
+Docker Compose **M.I.N.G stack** (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
 
 ## 📦 Features
 - ✅ One-click Portainer stack deploy
 - ✅ Node-RED MQTT flows (Axis → Influx)
-- ✅ Grafana dashboards + Flux queries (no truncation)
-- ✅ Pattern detection (occupancy/cleaning)
-- ✅ Provisioning & env secrets
+- ✅ Grafana dashboard
 
 ## 🛠️ Prerequisites
 - Install and setup up [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
 - AXIS D6310 or two
 
-**MING stack Portainer Deploy**:
+**M.I.N.G stack Portainer Deploy**:
 Portainer: https://your-host:9443/
 1. Stacks → **+ Add stack**
 2. Name: `axis-airquality`
@@ -32,25 +30,25 @@ Portainer: https://your-host:9443/
 - Update Firmware to latest
 - http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication
 - Host: you computers IP
-- Save => Connect
-- "+ Add Condition"
+- **Save** → **Connect**
+- **+ Add Condition**
 - Condition: Air quality monitoring active
-- Add
+- **Add**
 - Take note of device serial for next step
 
 ### Node-RED Flow
 Node-RED: `http://your-host:1880`
 - Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
-- Double click Axis D6310 MQTT node
+- Double click **Axis D6310 MQTT node**
 - Change serial number in Topic to your device serial
 - Open InfluxDB: `http://your-host:8086` (admin/password123)
-- Click Load Data => API Tokens => Generate API Token => All Access API Token
+- Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
 - Name it anything
 - Manaul copy the token (copy to clipboard doesnt always work)
-- Back in Node Red double click "InfluxDB Axis AQ" node
+- Back in Node Red double click **InfluxDB Axis AQ** node
 - Click pencil next to "Server"
-- Paste Token in Token field
-- Click Update => Done => Deploy
+- Paste Token in **Token** field
+- Click **Update** → **Done** → **Deploy**
 
 
 ## 📊 Grafana Queries (1m Resolution)
@@ -58,23 +56,23 @@ Node-RED: `http://your-host:1880`
 Grafana: `http://your-host:3000` (admin/password123)
 
 ### Add Data source
-- Connections => Data Sources => Add data source => InfluxDB
+- **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
 - Query language= Flux
 - URL: http://influxdb:8086
 - User: admin
 - Password: password123
 - Organization: iot
 - Open InfluxDB: `http://your-host:8086` (admin/password123)
-- Click Load Data => API Tokens => Generate API Token => All Access API Token
+- Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
 - Name it anything
 - Manaul copy the token (copy to clipboard doesnt always work)
-- Paste Token in Token field
-- Save & Test
+- Paste Token in **Token** field
+- **Save & Test**
 
 ## Add Dashboard
-- Dashboards => Create dashboard
-- Add visualization
-- Click InfluxDB
+- **Dashboards** → **Create dashboard**
+- **Add visualization**
+- Click **InfluxDB**
 
 ### Temperature
 - Title: Temperature
@@ -88,9 +86,9 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Temperature")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-- Back to dashboard
-- Add => Visualization
-- 
+- **Back to dashboard**
+- **Add** → **Visualization**
+  
 ### Humidity
 - Title: Humidity
 - Paste below into query field
@@ -104,8 +102,8 @@ from(bucket: "airquality")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
 
-- Back to dashboard
-- Add => Visualization
+- **Back to dashboard**
+- **Add** → **Visualization**
 
 ### VOC
 - Title: VOC
@@ -120,8 +118,8 @@ from(bucket: "airquality")
   |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)
 ```
 
-- Back to dashboard
-- Add => Visualization
+- **Back to dashboard**
+- **Add** → **Visualization**
 
 ### CO2
 - Title: CO2
@@ -136,8 +134,8 @@ from(bucket: "airquality")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
 
-- Back to dashboard
-- Add => Visualization
+- **Back to dashboard**
+- **Add** → **Visualization**
 
 ### PM1, PM2.5, PM4, PM10
 - Title: PM1, PM2.5, PM4, PM10
@@ -152,8 +150,8 @@ from(bucket: "airquality")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
 
-- Back to dashboard
-- Add => Visualization
+- **Back to dashboard**
+- **Add** → **Visualization**
 
 ### AQI
 - Title: AQI
@@ -168,8 +166,9 @@ from(bucket: "airquality")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
 
-- Back to dashboard
-- Save Dashboard 
+- **Back to dashboard**
+- **Add** → **Save Dashboard**
+  
 
 ## 🐛 Troubleshooting
 
