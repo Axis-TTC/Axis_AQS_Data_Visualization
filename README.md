@@ -1,13 +1,13 @@
-# Axis D6310 Air Quality MING Stack 🚀
+# Axis D6310 Air Quality M.I.N.G Stack
 
 Docker Compose **M.I.N.G stack** (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
 
-## 📦 Features
+## Features
 - ✅ One-click Portainer stack deploy
 - ✅ Node-RED MQTT flows (Axis → Influx)
 - ✅ Grafana dashboard
 
-## 🛠️ Prerequisites
+## Prerequisites
 - Install and setup up [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
 - AXIS D6310 or two
 
@@ -24,7 +24,7 @@ Portainer: https://your-host:9443/
 - Node-RED: `http://your-host:1880`
 - InfluxDB: `http://your-host:8086` (admin/password123)
 
-## 🔧 Configuration
+## Configuration
 
 ### D6310
 - Update Firmware to latest
@@ -51,7 +51,7 @@ Node-RED: `http://your-host:1880`
 - Click **Update** → **Done** → **Deploy**
 
 
-## 📊 Grafana Queries (1m Resolution)
+## Grafana Queries (1m Resolution)
 
 Grafana: `http://your-host:3000` (admin/password123)
 
@@ -175,7 +175,7 @@ from(bucket: "airquality")
 - **Add** → **Save Dashboard**
   
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
