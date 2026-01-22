@@ -1,0 +1,160 @@
+[
+    {
+        "id": "f56677d8c263551c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "mqtt-in-axis",
+        "type": "mqtt in",
+        "z": "f56677d8c263551c",
+        "name": "Axis D6310 MQTT",
+        "topic": "axis/E827251A7B09/event/tns:axis/AirQualityMonitor/Metadata/#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "50925236d483f944",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "parse-json"
+            ]
+        ]
+    },
+    {
+        "id": "parse-json",
+        "type": "function",
+        "z": "f56677d8c263551c",
+        "name": "Parse Axis JSON",
+        "func": "// From MQTT In: msg.payload = raw JSON, msg.topic = full Axis topic\nconst fullTopic = msg.topic;  \nconst rawPayload = msg.payload;\n\n// Safe extraction - handles variations in Axis JSON\nconst data = rawPayload.data || rawPayload.message?.data || rawPayload;\nconst ts = rawPayload.timestamp || Date.now();\nconst sensorName = fullTopic.split('/').pop() || 'unknown';  // \"D6310\"\nconst cameraId = fullTopic.split('/')[1] || 'unknown';      \n\n// InfluxDB v2 array format: [fields, tags]\nmsg.measurement = \"air_quality\";\nmsg.payload = [\n  {  // FIELDS first\n    PM25: Number(data['PM2.5'] || 0),\n    PM10: Number(data['PM10.0'] || 0),\n    PM1: Number(data['PM1.0'] || 0),\n    PM4: Number(data['PM4.0'] || 0),\n    NOx: Number(data['NOx'] || 0),\n    VOC: Number(data['VOC'] || 0),\n    AQI: Number(data['AQI'] || 0),\n    Temperature: Number(data['Temperature'] || 0),\n    Humidity: Number(data['Humidity'] || 0),\n    CO2: Number(data['CO2'] || 0)\n  },\n  {  // TAGS second\n    sensor_name: sensorName,\n    camera_id: cameraId\n  }\n];\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 300,
+        "wires": [
+            [
+                "influxdb-out"
+            ]
+        ]
+    },
+    {
+        "id": "debug",
+        "type": "debug",
+        "z": "f56677d8c263551c",
+        "name": "Debug parsed data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "30ae314397340284",
+        "type": "mqtt in",
+        "z": "f56677d8c263551c",
+        "name": "Axis D6310 MQTT",
+        "topic": "axis/E827251A7B8B/event/tns:axis/AirQualityMonitor/Metadata/#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "50925236d483f944",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 250,
+        "y": 380,
+        "wires": [
+            [
+                "parse-json"
+            ]
+        ]
+    },
+    {
+        "id": "influxdb-out",
+        "type": "influxdb out",
+        "z": "f56677d8c263551c",
+        "influxdb": "75c5b6115d4897e4",
+        "name": "InfluxDB Axis AQ",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "axis_air_quality",
+        "retentionPolicyV18Flux": "",
+        "org": "iot",
+        "bucket": "airquality",
+        "x": 690,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "50925236d483f944",
+        "type": "mqtt-broker",
+        "name": "TTC Broker",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "75c5b6115d4897e4",
+        "type": "influxdb",
+        "hostname": "192.168.5.174",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "influx",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "d542a5a6e96b3313",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
