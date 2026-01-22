@@ -31,7 +31,8 @@ Portainer: https://your-host:9443/
 - Grafana: `http://your-host:3000` (admin/password123)
 - Node-RED: `http://your-host:1880`
 - InfluxDB: `http://your-host:8086` (admin/password123)
-
+- Mosquitto: `http://your-host:1883`
+  
 ## Configuration
 
 ### D6310
