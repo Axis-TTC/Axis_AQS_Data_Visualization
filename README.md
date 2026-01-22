@@ -17,6 +17,8 @@ Portainer: https://your-host:9443/
 2. Name: `axis-airquality`
 3. **Web editor** → Paste contents of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
 4. **Deploy stack**
+   
+***OR***
 
 **M.I.N.G stack Docker Compose Deploy**:
 1. ```sudo apt install docker-compose```
