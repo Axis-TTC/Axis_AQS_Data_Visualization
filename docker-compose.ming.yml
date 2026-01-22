@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     ports:
       - "1883:1883"
-    volumes:  # Added for persistence
+    volumes:  
       - mosquitto-data:/mosquitto
     networks:
       - ming-net
@@ -29,7 +29,7 @@ services:
     networks:
       - ming-net
     volumes:
-      - influxdb-data:/var/lib/influxdb2  # Changed to influxdb-data (hyphen) and correct path
+      - influxdb-data:/var/lib/influxdb2 
 
   node-red:
     image: nodered/node-red:latest
@@ -39,7 +39,7 @@ services:
     networks:
       - ming-net
     volumes:
-      - node-red-data:/data  # Changed to node-red-data (hyphen)
+      - node-red-data:/data  
 
   grafana:
     image: grafana/grafana:latest
@@ -52,7 +52,7 @@ services:
     networks:
       - ming-net
     volumes:
-      - grafana-data:/var/lib/grafana  # Changed to grafana-data (hyphen)
+      - grafana-data:/var/lib/grafana  
 
 networks:
   ming-net:
