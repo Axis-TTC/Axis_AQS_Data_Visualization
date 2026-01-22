@@ -2,7 +2,7 @@
     {
         "id": "f56677d8c263551c",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "AQS to Influx",
         "disabled": false,
         "info": "",
         "env": []
