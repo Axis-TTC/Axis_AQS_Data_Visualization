@@ -1,9 +1,9 @@
 # Axis D6310 Air Quality M.I.N.G Stack
 
-Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
+Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
 
 ## Features
-- One-click Portainer stack deploy
+- One-click Portainer stack deploy or simple Docker Compose
 - Node-RED MQTT flows (Axis → Influx)
 - Grafana dashboard
 
@@ -17,6 +17,14 @@ Portainer: https://your-host:9443/
 2. Name: `axis-airquality`
 3. **Web editor** → Paste contents of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
 4. **Deploy stack**
+
+**M.I.N.G stack Docker Compose Deploy**:
+1. ```sudo apt install docker-compose```
+2. ```mkdir -p axis-aqs && cd axis-aqs```
+3. ```nano docker-compose.yml```
+4. Paste content of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
+5. Save and exit (control + x)
+6. ```sudo docker-compose up -d```
 
 **Access**:
 - Portainer: `http://your-host:9443` (admin/?)
