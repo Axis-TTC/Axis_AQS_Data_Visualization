@@ -10,8 +10,8 @@ Docker Compose **MING stack** (Mosquitto MQTT, InfluxDB, Node-RED, Grafana) for 
 - ✅ Provisioning & env secrets
 
 ## 🛠️ Prerequisites
-- [Docker](https://docker.com) + [Portainer](https://portainer.io)
-- AXIS D6310 MQTT enabled: `http://[camera-ip]/axis-cgi/mqtt.cgi`
+- [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
+- AXIS D6310 with MQTT enabled: `[http://[camera-ip]/environmental-sensor/index.html#/system/mqtt/publication]
 
 ## 🚀 Quick Start
 ```bash
