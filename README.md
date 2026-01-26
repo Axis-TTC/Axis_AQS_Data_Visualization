@@ -11,15 +11,6 @@ Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-
 - Install and setup up [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
 - AXIS D6310 or two
 
-**M.I.N.G stack Portainer Deploy**:
-Portainer: https://your-host:9443/
-1. **Stacks** → **+ Add stack**
-2. Name: `axis-airquality`
-3. **Web editor** → Paste contents of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
-4. **Deploy stack**
-   
-***OR***
-
 **M.I.N.G stack Docker Compose Deploy**:
 1. ```sudo apt install docker-compose```
 2. ```mkdir -p axis-aqs && cd axis-aqs```
@@ -27,6 +18,15 @@ Portainer: https://your-host:9443/
 4. Paste content of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
 5. Save and exit (control + x)
 6. ```sudo docker-compose up -d```
+
+***OR***
+
+**M.I.N.G stack Portainer Deploy**:
+Portainer: https://your-host:9443/
+1. **Stacks** → **+ Add stack**
+2. Name: `axis-airquality`
+3. **Web editor** → Paste contents of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
+4. **Deploy stack**
 
 **Access**:
 - Portainer: `http://your-host:9443` (admin/?)
