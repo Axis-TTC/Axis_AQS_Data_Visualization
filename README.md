@@ -13,6 +13,7 @@ Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-
 - Git for windows
 
 **M.I.N.G stack Docker Compose Deploy**:
+
 ***Windows***
 1. Clone the repo ```git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization```
 2. ```cd Axis_AQS_Data_Visualization```
