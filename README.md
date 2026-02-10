@@ -10,8 +10,15 @@ Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-
 ## Prerequisites
 - Install and setup up [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
 - AXIS D6310 or two
+- Git for windows
 
 **M.I.N.G stack Docker Compose Deploy**:
+***Windows***
+1. Clone the repo ```git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization```
+2. ```cd Axis_AQS_Data_Visualization```
+3. docker-compose -f docker-compose.ming.yml up -d```
+   
+***Linux***
 1. ```sudo apt install docker-compose```
 2. ```mkdir -p axis-aqs && cd axis-aqs```
 3. ```nano docker-compose.yml```
