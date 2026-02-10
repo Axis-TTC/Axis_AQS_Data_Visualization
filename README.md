@@ -18,7 +18,7 @@ Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-
 1. Install Docker Desktop (https://docs.docker.com/desktop/setup/install/windows-install/) and Git (https://git-scm.com/install/windows)
 2. Clone the repo ```git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization```
 3. ```cd Axis_AQS_Data_Visualization```
-4. docker-compose -f docker-compose.ming.yml up -d```
+4. ```docker-compose -f docker-compose.ming.yml up -d```
    
 ***Linux***
 1. ```sudo apt install docker-compose```
