@@ -56,9 +56,6 @@ Portainer: https://your-host:9443/
 - **Add**
 - Take note of device serial for next step
 
-<img width="523" height="679" alt="image" src="https://github.com/user-attachments/assets/fa11eca6-a4f4-47e7-bdb5-4cab7f25ce58" />
-
-
 ### Node-RED Flow
 Node-RED: `http://your-host:1880`
 - Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
