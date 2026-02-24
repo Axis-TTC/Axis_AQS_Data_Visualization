@@ -56,6 +56,9 @@ Portainer: https://your-host:9443/
 - **Add**
 - Take note of device serial for next step
 
+<img width="523" height="679" alt="image" src="https://github.com/user-attachments/assets/fa11eca6-a4f4-47e7-bdb5-4cab7f25ce58" />
+
+
 ### Node-RED Flow
 Node-RED: `http://your-host:1880`
 - Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
@@ -107,6 +110,16 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Temperature")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
+To rename the sensors
+- on the right hand side scroll all tha way to the bottom.
+- Click **+ Add field override**
+- Select **Fields with name**
+- In the drop down select the sensor you want to change
+- Click **+ Add override property**
+- Select **Standard options > Display name**
+- Type the new name for the sensor
+- Repeat for other sensors
+  
 - **Back to dashboard**
 - **Add** → **Visualization**
   
