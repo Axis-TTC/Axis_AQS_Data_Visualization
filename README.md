@@ -73,6 +73,17 @@ Node-RED: `http://your-host:1880`
 - Paste Token in **Token** field
 - Click **Update** → **Done** → **Deploy**
 
+## InfluxDB
+
+InfluxDB: `http://your-host:8086` (admin/password123)
+
+Check that data is being stored
+- On the left side click **Data Explorer**
+- Select **airquality**
+- Tick **air_quality**
+- Tick one of the data types eg. AQI or CO2
+- Select **Past 1h** from the drop down
+- You should see data, if not go back to the Node-Red flow
 
 ## Grafana Queries (1m Resolution)
 
