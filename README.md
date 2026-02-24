@@ -113,7 +113,7 @@ from(bucket: "airquality")
 To rename the sensors
 - on the right hand side scroll all tha way to the bottom.
 - Click **+ Add field override**
-- Select **Fields with name**
+- Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
 - In the drop down select the sensor you want to change
 - Click **+ Add override property**
 - Select **Standard options > Display name**
