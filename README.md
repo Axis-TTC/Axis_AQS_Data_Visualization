@@ -159,7 +159,7 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._measurement == "air_quality")
   |> filter(fn: (r) => r.sensor_name == "D6310")
   |> filter(fn: (r) => r._field == "VOC")
-  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)
+  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
 
 - **Back to dashboard**
