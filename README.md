@@ -31,18 +31,17 @@ Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-
 ***OR***
 
 **M.I.N.G stack Portainer Deploy**:
-Portainer: https://your-host:9443/
+Portainer: https://localhost:9443/
 1. **Stacks** → **+ Add stack**
 2. Name: `axis-airquality`
 3. **Web editor** → Paste contents of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
 4. **Deploy stack**
 
 **Access**:
-- Portainer: `http://your-host:9443` (admin/?)
-- Grafana: `http://your-host:3000` (admin/password123)
-- Node-RED: `http://your-host:1880`
-- InfluxDB: `http://your-host:8086` (admin/password123)
-- Mosquitto: `http://your-host:1883`
+- Grafana: `http://localhost:3000` (admin/password123)
+- Node-RED: `http://localhost:1880`
+- InfluxDB: `http://localhost:8086` (admin/password123)
+- Mosquitto: `http://localhost:1883`
   
 ## Configuration
 
@@ -57,11 +56,11 @@ Portainer: https://your-host:9443/
 - Take note of device serial for next step
 
 ### Node-RED Flow
-Node-RED: `http://your-host:1880`
+Node-RED: `http://localhost:1880`
 - Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
 - Double click **Axis D6310 MQTT node**
 - Change serial number in Topic to your device serial
-- Open InfluxDB: `http://your-host:8086` (admin/password123)
+- Open InfluxDB: `http://localhost:8086` (admin/password123)
 - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
 - Name it anything
 - Manaul copy the token (copy to clipboard doesnt always work)
@@ -72,7 +71,7 @@ Node-RED: `http://your-host:1880`
 
 ## InfluxDB
 
-InfluxDB: `http://your-host:8086` (admin/password123)
+InfluxDB: `http://localhost:8086` (admin/password123)
 
 Check that data is being stored
 - On the left side click **Data Explorer**
@@ -84,7 +83,7 @@ Check that data is being stored
 
 ## Grafana Queries (1m Resolution)
 
-Grafana: `http://your-host:3000` (admin/password123)
+Grafana: `http://localhost:3000` (admin/password123)
 
 ### Add Data source
 - **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
@@ -93,7 +92,7 @@ Grafana: `http://your-host:3000` (admin/password123)
 - User: admin
 - Password: password123
 - Organization: iot
-- Open InfluxDB: `http://your-host:8086` (admin/password123)
+- Open InfluxDB: `http://localhost:8086` (admin/password123)
 - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
 - Name it anything
 - Manaul copy the token (copy to clipboard doesnt always work)
