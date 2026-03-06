@@ -201,7 +201,7 @@ Entrance: E827251A8AF7
 ### Humidity
 
 1. Click the three dots in the top right of the **Tempreture** panel you just created
-2. Select **More* then **Duplicate**
+2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
 - Title: Humidity
@@ -225,7 +225,7 @@ from(bucket: "airquality")
 ### VOC
 
 1. Click the three dots in the top right of the panel you just created
-2. Select **More* then **Duplicate**
+2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
 - Title: VOC
@@ -249,7 +249,7 @@ from(bucket: "airquality")
 ### CO2
 
 1. Click the three dots in the top right of the panel you just created
-2. Select **More* then **Duplicate**
+2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
 - Title: CO2
@@ -273,7 +273,7 @@ from(bucket: "airquality")
 ### PM1, PM2.5, PM4, PM10
 
 1. Click the three dots in the top right of the panel you just created
-2. Select **More* then **Duplicate**
+2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
 - Title: PM1, PM2.5, PM4, PM10
@@ -297,7 +297,7 @@ from(bucket: "airquality")
 ### AQI
 
 1. Click the three dots in the top right of the panel you just created
-2. Select **More* then **Duplicate**
+2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
 - Title: AQI
