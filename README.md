@@ -40,11 +40,11 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 ### D6310 
 **(For the TTC workshop the D6310 is already configured, skip to the Node-RED Flow)**
 1. Update Firmware to latest
-2. http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication
+2. Configure MQTT (http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication)
 3. Host: you computers IP
 4. **Save** → **Connect**
 5. **+ Add Condition**
-6. Condition: Air quality monitoring active
+6. Condition: Air quality monitoring active (this starts publishing air quality data every second)
 7. **Add**
 8. Take note of device serial for next step
 
