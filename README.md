@@ -2,6 +2,45 @@
 
 Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
 
+---
+
+## What This Stack Does
+
+```
+┌─────────────┐     MQTT      ┌──────────┐     Transforms    ┌──────────┐
+│ AXIS D6310  │ ────────────> │ Node-RED │ ───────────────> │ InfluxDB │
+│  (Sensor)   │   Messages    │  (Flow)  │    & Stores      │  (TSDB)  │
+└─────────────┘               └──────────┘                   └──────────┘
+                                                                    │
+                                                                    │ Queries
+                                                                    ▼
+                              ┌──────────┐                   ┌──────────┐
+                              │  Grafana │ <──────────────── │ InfluxDB │
+                              │(Dashboards                    └──────────┘
+                              │ & Alerts)│
+                              └──────────┘
+                                    │
+                                    │ MQTT Alerts
+                                    ▼
+                              ┌──────────┐
+                              │   Axis   │
+                              │  Device  │
+                              │ (Events) │
+                              └──────────┘
+```
+
+### Components Explained
+
+| Component | Role | Why It Matters |
+|-----------|------|----------------|
+| **AXIS D6310** | Air quality sensor (temp, humidity, VOC, CO2, PM, AQI) | Publishes real-time environmental data via MQTT |
+| **MQTT Broker (Mosquitto)** | Message bus | Lightweight pub/sub for sensor data and alerts |
+| **Node-RED** | Data pipeline | Subscribes to MQTT, transforms JSON, writes to InfluxDB |
+| **InfluxDB** | Time-series database | Stores all measurements with timestamps for querying |
+| **Grafana** | Visualization & alerting | Builds dashboards, monitors thresholds, sends MQTT alerts |
+
+---
+
 ## Features
 - Simple Docker Compose
 - Node-RED MQTT flows (Axis → Influx)
@@ -9,10 +48,10 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 
 ## Prerequisites
 - Docker 
-- AXIS D6310 or two
+- AXIS D6310 sensor(s)
 - Git for windows
 
-**M.I.N.G stack Docker Compose Deploy**:
+### Deploy the Stack
 
 ***Windows***
 1. Install [Docker](https://docs.docker.com/desktop/setup/install/windows-install/) and [Git](https://git-scm.com/install/windows) **(For the TTC workshop they are already installed on the workstation)**
@@ -29,76 +68,99 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 6. Save and exit (control + x)
 7. ```sudo docker-compose up -d```
 
-**Access**:
-- Grafana: `http://localhost:3000` (admin/password123)
-- Node-RED: `http://localhost:1880`
-- InfluxDB: `http://localhost:8086` (admin/password123)
-- Mosquitto: `http://localhost:1883`
-  
+### Access Services
+
+| Service | URL | Credentials |
+|---------|-----|-------------|
+| **Grafana** | http://localhost:3000 | admin / password123 |
+| **Node-RED** | http://localhost:1880 | (none) |
+| **InfluxDB** | http://localhost:8086 | admin / password123 |
+| **MQTT Broker** | tcp://localhost:1883 | (none) |
+
+---
+
 ## Configuration
 
-### D6310 
+### 1. Configure AXIS D6310 Sensor
+
+**What happens:** Sensor publishes air quality data to MQTT every second.
+
 **(For the TTC workshop the D6310 is already configured, skip to the Node-RED Flow)**
 1. Update Firmware to latest
 2. Configure MQTT (http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication)
-3. Host: you computers IP
-4. **Save** → **Connect**
+   - Host: you computers IP
+   - **Save** → **Connect**
 5. **+ Add Condition**
-6. Condition: Air quality monitoring active (this starts publishing air quality data every second)
-7. **Add**
+   - Condition: Air quality monitoring active (this starts publishing air quality data every second)
+   - **Add**
 8. Take note of device serial for next step
 
-### Node-RED Flow
+---
 
-Node-RED: `http://localhost:1880`
+### 2. Configure Node-RED Flow
 
-1. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
-2. Double click **Axis D6310 MQTT node**
-3. Change serial number in Topic to your device serial
-4. **For the TTC workshop** click the pencil and change the broker URL to `mqtt.ttc.local`
-5. In a new tab Open InfluxDB: `http://localhost:8086` (admin/password123)
-6. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
-7. Name it anything
-8. Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
-9. Back in Node Red double click **InfluxDB Axis AQ** node
-10. Click pencil next to "Server"
-11. Paste Token in **Token** field
-12. Click **Update** → **Done** → **Deploy**
+**What happens:** Node-RED subscribes to sensor MQTT topics, parses messages, writes structured data to InfluxDB.
 
-## InfluxDB
+1. Open Node-RED: (http://localhost:1880)
+2. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
+3. Double click **Axis D6310 MQTT node**
+   - Change serial number in Topic to your device serial
+   - **For the TTC workshop** click the pencil and change the broker URL to `mqtt.ttc.local`
+4. In a new tab Open InfluxDB: `http://localhost:8086` (admin/password123)
+   - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
+   - Name it anything
+   - Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
+10. Back in Node Red double click **InfluxDB Axis AQ** node
+    - Click pencil next to "Server"
+    - Paste Token in **Token** field
+    - Click **Update** → **Done** → **Deploy**
 
-InfluxDB: `http://localhost:8086` (admin/password123)
+---
 
-Check that data is being stored
-1. On the left side click **Data Explorer**
-2. Select **airquality**
-3. Tick **air_quality**
-4. Tick one of the data types eg. AQI or CO2
-5. Select **Past 1h** from the drop down
-6. You should see data, if not go back to the Node-Red flow
+## 3. Verify Data in InfluxDB
 
-## Grafana
+**What happens:** Check that sensor data is being written to the time-series database.
 
-Grafana: `http://localhost:3000` (admin/password123)
+1. Open InfluxDB: (http://localhost:8086) (admin/password123)
+2. On the left side click **Data Explorer**
+   - Select **airquality**
+   - Tick **air_quality**
+   - Tick one of the data types eg. AQI or CO2
+   - Select **Past 1h** from the drop down
+7. You should see data plotted
 
-### Add Data source
-1. **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
-2. Query language= Flux
-3. URL: http://influxdb:8086
-4. User: admin
-5. Password: password123
-7. Organization: iot
-8. Open InfluxDB: `http://localhost:8086` (admin/password123)
-9. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
-10. Name it anything
-11. Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
-12. Paste Token in **Token** field
+**No data?** Check Node-RED debug panel and MQTT configuration.
+
+---
+
+## Build Grafana Dashboard
+
+### Add InfluxDB Data Source
+
+**What happens:** Connect Grafana to InfluxDB so it can query and visualize data.
+
+1. Open InfluxDB: `http://localhost:8086` (admin/password123)
+2. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
+    - Name it anything
+    - Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
+3. Open Grafana: (http://localhost:3000) (admin/password123)
+4. **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
+   - Query language= Flux
+   - URL: http://influxdb:8086
+   - User: admin
+   - Password: password123
+   - Organization: iot
+   - Paste the InfluxDB Token in **Token** field
 13. **Save & Test**
 
-## Add Dashboard
-1. **Dashboards** → **Create dashboard**
-2. **Add visualization**
-3. Click **InfluxDB**
+---
+
+### Create Dashboard Panels
+
+**What happens:** Build visual panels that query InfluxDB and plot metrics over time.
+
+1. In Grafana click **Dashboards** → **Create dashboard** → **Add visualization**
+3. Select **InfluxDB**
 
 ### Temperature
 - Title: Temperature
@@ -113,7 +175,17 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Temperature")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-- Click **Query options** and change **Max data points** to `5000` (this allows displaying more than one day of data).
+
+**Understanding the Query:**
+- `from(bucket: "airquality")` → Select the database
+- `range()` → Time window from Grafana picker
+- `filter(_measurement)` → Which table (air_quality)
+- `filter(sensor_name)` → Which device
+- `filter(_field)` → Which metric (Temperature, CO2, etc.)
+- `aggregateWindow()` → Average values per minute (reduces noise)
+
+### Increase Query Data Points (this allows displaying more than one day of data).
+- Click **Query options** and change **Max data points** to `5000` 
   
 ### To rename the sensors
 1. on the right hand side scroll all tha way to the bottom.
@@ -127,6 +199,8 @@ from(bucket: "airquality")
   
 - **Back to dashboard**
 - **Add** → **Visualization**
+
+---
   
 ### Humidity
 - Title: Humidity
@@ -141,10 +215,23 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Humidity")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-- Click **Query options** and change **Max data points** to `5000` (this allows displaying more than one day of data).
+### Increase Query Data Points (this allows displaying more than one day of data).
+- Click **Query options** and change **Max data points** to `5000` 
+  
+### To rename the sensors
+1. on the right hand side scroll all tha way to the bottom.
+2. Click **+ Add field override**
+3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
+4. In the drop down select the sensor you want to change
+5. Click **+ Add override property**
+6. Select **Standard options > Display name**
+7. Type the new name for the sensor
+8. Repeat for other sensors
   
 - **Back to dashboard**
 - **Add** → **Visualization**
+
+---
 
 ### VOC
 - Title: VOC
@@ -159,10 +246,23 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "VOC")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-- Click **Query options** and change **Max data points** to `5000` (this allows displaying more than one day of data).
+### Increase Query Data Points (this allows displaying more than one day of data).
+- Click **Query options** and change **Max data points** to `5000` 
+  
+### To rename the sensors
+1. on the right hand side scroll all tha way to the bottom.
+2. Click **+ Add field override**
+3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
+4. In the drop down select the sensor you want to change
+5. Click **+ Add override property**
+6. Select **Standard options > Display name**
+7. Type the new name for the sensor
+8. Repeat for other sensors
   
 - **Back to dashboard**
 - **Add** → **Visualization**
+
+---
 
 ### CO2
 - Title: CO2
@@ -177,10 +277,23 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "CO2")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-- Click **Query options** and change **Max data points** to `5000` (this allows displaying more than one day of data).
+### Increase Query Data Points (this allows displaying more than one day of data).
+- Click **Query options** and change **Max data points** to `5000` 
+  
+### To rename the sensors
+1. on the right hand side scroll all tha way to the bottom.
+2. Click **+ Add field override**
+3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
+4. In the drop down select the sensor you want to change
+5. Click **+ Add override property**
+6. Select **Standard options > Display name**
+7. Type the new name for the sensor
+8. Repeat for other sensors
   
 - **Back to dashboard**
 - **Add** → **Visualization**
+
+---
 
 ### PM1, PM2.5, PM4, PM10
 - Title: PM1, PM2.5, PM4, PM10
@@ -195,10 +308,23 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "PM1" or r._field == "PM25" or r._field == "PM4" or r._field == "PM10")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-- Click **Query options** and change **Max data points** to `5000` (this allows displaying more than one day of data).
+### Increase Query Data Points (this allows displaying more than one day of data).
+- Click **Query options** and change **Max data points** to `5000` 
+  
+### To rename the sensors
+1. on the right hand side scroll all tha way to the bottom.
+2. Click **+ Add field override**
+3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
+4. In the drop down select the sensor you want to change
+5. Click **+ Add override property**
+6. Select **Standard options > Display name**
+7. Type the new name for the sensor
+8. Repeat for other sensors
   
 - **Back to dashboard**
 - **Add** → **Visualization**
+
+---
 
 ### AQI
 - Title: AQI
@@ -212,21 +338,157 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "AQI")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-- Click **Query options** and change **Max data points** to `5000` (this allows displaying more than one day of data).
+
+### Increase Query Data Points (this allows displaying more than one day of data).
+- Click **Query options** and change **Max data points** to `5000` 
+  
+### To rename the sensors
+1. on the right hand side scroll all tha way to the bottom.
+2. Click **+ Add field override**
+3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
+4. In the drop down select the sensor you want to change
+5. Click **+ Add override property**
+6. Select **Standard options > Display name**
+7. Type the new name for the sensor
+8. Repeat for other sensors
   
 - **Back to dashboard**
-- **Add** → **Save Dashboard**
+- **Add** → **Visualization**
 
-## For the TTC workshop go to [Task 2](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/Task_2.md)
+---
 
+## Connect to Historical Data (Task 2)
 
-## Troubleshooting
+**What happens:** Query a separate InfluxDB that has been collecting data for days/weeks to analyze trends and anomalies.
+
+1. In Grafana: **Connections** → **Data Sources** → Edit existing or add new InfluxDB
+2. Configure historical database:
+   - URL: `http://192.168.5.174:8086`
+   - Token: `8x91i7sURTyiLT-Sv9kK8xyoTL7GOhRjxUZRgVeaXdVh-d7GoBOcmpUZWsvd2ZQ83VzZJDkZ-jjuUVI_uigDwQ==`
+   - User: `admin` / Password: `password123`
+3. **Save & Test**
+4. In dashboards, change time range to **Last 7 days**
+5. Look for anomalies:
+   - **CO2 spikes** → High occupancy events
+   - **VOC increases** → Cleaning, new materials
+   - **PM spikes** → Construction, outdoor pollution events
+6. **(Optional)** Review Axis camera SD card footage to correlate events with air quality changes
+
+---
+
+## (Bonus) Create Alerts & Axis Device Integration (Task 3) 
+
+**What happens:** Grafana monitors thresholds and publishes MQTT alert messages that Axis devices subscribe to, triggering actions (recordings, outputs, notifications).
+
+```
+Grafana detects: VOC > 1000 ppb
+      ↓
+Sends MQTT message to: grafana/group1/alerts
+      ↓
+Axis device subscribed to topic
+      ↓
+Triggers: Recording + Notification
+```
+
+### Step 1: Add MQTT Contact Point in Grafana
+
+1. **Alerting** → **Contact points** → **+ Add contact point**
+2. Configure:
+   - Name: `MQTT Alerts`
+   - Integration: **MQTT**
+   - Broker URL: `tcp://mqtt.ttc.local:1883`
+   - Topic: `grafana/groupX/alerts` (replace `X` with your group number)
+3. **Save contact point**
+
+### Step 2: Create Alert Rule
+
+1. **Alerting** → **Alert rules** → **+ New alert rule**
+2. Name: e.g., "High VOC Alert"
+3. Add query (example for VOC):
+```flux
+from(bucket: "airquality")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r._measurement == "air_quality")
+  |> filter(fn: (r) => r.sensor_name == "D6310")
+  |> filter(fn: (r) => r._field == "VOC")
+  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+```
+4. **Alert condition:**
+   - Reducer: **last** (use most recent value)
+   - Threshold: **is above**
+   - Value: `1000` (ppb for VOC)
+5. **Folder:** Create "Air Quality Alerts"
+6. **Evaluation behavior:**
+   - New evaluation group: "Environmental Monitoring"
+   - Evaluation interval: `10s` (how often to check)
+   - Pending period: `10s` (must be true for 10s before firing)
+7. **Notifications:** Select your MQTT contact point
+8. **Save rule and exit**
+
+### Step 3: Test with MQTT Explorer
+
+1. Open **MQTT Explorer** → Connect to `mqtt.ttc.local:1883`
+2. Subscribe to `grafana/groupX/alerts`
+3. Trigger alert (exceed threshold or temporarily lower it)
+4. Wait 1-2 minutes → Alert messages appear in MQTT Explorer
+
+### Step 4: Configure Axis Device Event
+
+1. Access Axis device web interface
+2. **System** → **MQTT** → Connect to `mqtt.ttc.local:1883`
+3. Add MQTT subscription: `grafana/groupX/alerts`
+4. **System** → **Events** → **Device events** → **Add rule**
+5. Configure:
+   - Trigger: **MQTT message received**
+   - Topic: `grafana/groupX/alerts`
+   - Action: Activate output / Record / Send notification
+6. **Save** and test by triggering alert
+
+---
+
+## Reference
+
+### Recommended Alert Thresholds
+
+| Metric | Threshold | Meaning |
+|--------|-----------|---------|
+| **VOC** | > 500 | Poor air quality |
+| **CO2** | > 1000 ppm | Poor ventilation / high occupancy |
+| **PM2.5** | > 35 µg/m³ | Unhealthy for sensitive groups |
+| **Temperature** | > 26°C or < 18°C | Outside comfort zone |
+| **Humidity** | > 60% or < 30% | Uncomfortable / health risk |
+| **AQI** | > 100 | Unhealthy air quality |
+
+### Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| **Too many datapoints** | Panel → Query → Max data points: `50000` |
-| **No MQTT data** | Check AXIS MQTT config, Node-RED logs |
-| **Influx empty** | Verify bucket `airquality`, Node-RED Influx node |
-| **Grafana no data** | Check provisioning, API token |
+| **No MQTT data in Node-RED** | Check D6310 MQTT config, broker address, device serial in topic |
+| **InfluxDB empty** | Verify bucket name `airquality`, check Node-RED InfluxDB node token |
+| **Grafana shows "No data"** | Verify data source connection, check Flux query syntax |
+| **Too many data points** | Increase **Max data points** to 5000-50000 in Query options |
+| **Alerts don't fire** | Check threshold value, preview alert condition, ensure data is flowing |
+| **Axis event doesn't trigger** | Verify MQTT subscription topic matches exactly, check event rule |
+| **Historical DB unreachable** | Confirm `192.168.5.174` is accessible, verify credentials |
 
-**⭐ Star if useful!** Questions? Open an issue.
+---
+
+## What You've Built
+
+**Real-time data pipeline:** Sensor → MQTT → Node-RED → InfluxDB → Grafana  
+**Historical analysis:** Multi-day trends and anomaly detection  
+**Automated alerting:** Threshold monitoring with MQTT notifications  
+**Device integration:** Grafana alerts trigger Axis camera events  
+
+**Next Steps:**
+- Add multiple sensors and group by location
+- Create custom dashboard layouts (rows, variables, templating)
+- Explore Grafana's transformation functions
+- Set up different alert severities (warning/critical)
+- Integrate with other systems via MQTT
+
+---
+
+## Developed for the Axis TTC Workshop
+
+**⭐ Star this repo if it helped you!**
