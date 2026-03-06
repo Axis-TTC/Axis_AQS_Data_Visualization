@@ -67,10 +67,10 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
 
 **What happens:** Sensor publishes air quality data to MQTT every second.
 
-**(For the TTC workshop the D6310 is already configured, skip to the Node-RED Flow)**
+**(For the TTC workshop the D6310's are already configured, skip to the [Node-RED Flow](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization#2-configure-node-red-flow)**
 1. Update Firmware to latest
 2. Configure MQTT (http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication)
-   - Host: you computers IP
+   - Host: your computers IP
    - **Save** → **Connect**
 5. **+ Add Condition**
    - Condition: Air quality monitoring active (this starts publishing air quality data every second)
@@ -92,12 +92,12 @@ D6310 Entrance: E827251A8AF7
 1. Open Node-RED: (http://localhost:1880)
 2. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
 3. Double click **Axis D6310 MQTT node**
-   - Change serial number in Topic to your device serial
+   - Change serial number in Topic to your device serial **(For the TTC workshop see list above)**
    - **For the TTC workshop** click the pencil and change the broker URL to `mqtt.ttc.local`
 4. In a new tab Open InfluxDB: `http://localhost:8086` (admin/password123)
    - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
    - Name it `nodered`
-   - Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
+   - Copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
 10. Back in Node Red double click **InfluxDB Axis AQ** node
     - Click pencil next to "Server"
     - Paste Token in **Token** field
@@ -130,14 +130,14 @@ D6310 Entrance: E827251A8AF7
 1. Open InfluxDB: `http://localhost:8086` (admin/password123)
 2. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
     - Name it `grafana`
-    - Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
+    - Copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
 3. Open Grafana: (http://localhost:3000) (admin/password123)
 4. **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
-   - Query language= Flux
-   - URL: http://influxdb:8086
-   - User: admin
-   - Password: password123
-   - Organization: iot
+   - Query language: Flux
+   - URL: `http://influxdb:8086`
+   - User: `admin`
+   - Password: `password123`
+   - Organization: `iot`
    - Paste the InfluxDB Token in **Token** field
 13. **Save & Test**
 
@@ -153,7 +153,7 @@ D6310 Entrance: E827251A8AF7
 ### Temperature
 
 1. Click **Back** near the top right corner
-- Title: Temperature
+- Title: `Temperature`
 - Unit: Temperature → Celsius (°C)
 - Paste below into query field
 
@@ -204,7 +204,7 @@ Entrance: E827251A8AF7
 2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
-- Title: Humidity
+- Title: `Humidity`
 - Unit: Misc → Percent (0-100)
 - Paste below into query field
 
@@ -228,7 +228,7 @@ from(bucket: "airquality")
 2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
-- Title: VOC
+- Title: `VOC`
 - Unit: Concentraion → parts-per-million (ppm)
 - Paste below into query field
 
@@ -252,7 +252,7 @@ from(bucket: "airquality")
 2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
-- Title: CO2
+- Title: `CO2`
 - Units: Concentraion → parts-per-million (ppm)
 - Paste below into query field
 
@@ -276,7 +276,7 @@ from(bucket: "airquality")
 2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
-- Title: PM1, PM2.5, PM4, PM10
+- Title: `PM1, PM2.5, PM4, PM10`
 - Units: Concentraion → micrograms per cubic meter (µg/m³)
 - Paste below into query field
 
@@ -300,7 +300,7 @@ from(bucket: "airquality")
 2. Select **More** then **Duplicate**
 3. Click the three dots at the top right of the new panel that appears then select **Edit**
 
-- Title: AQI
+- Title: `AQI`
 - Paste below into query field
 
 ```
@@ -360,12 +360,12 @@ Triggers: Recording + Notification
    - Topic: `grafana/groupX/alerts` (replace `X` with your group number)
 3. **Save contact point**
 
-### Step 2: Create Alert Rule
+### Step 2: Create Alert Rule in Grafana
 
 1. **Alerting** → **Alert rules** → **+ New alert rule**
-2. Name: e.g., "High VOC Alert"
+2. Name: `High VOC Alert`
 3. Add query (example for VOC):
-```flux
+```
 from(bucket: "airquality")
   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
   |> filter(fn: (r) => r._measurement == "air_quality")
@@ -377,6 +377,7 @@ from(bucket: "airquality")
    - Reducer: **last** (use most recent value)
    - Threshold: **is above**
    - Value: `100` (ppb for VOC)
+   - You can test it by clicking **preview alert rule condition**
 5. **Folder:** Create "Air Quality Alerts"
 6. **Evaluation behavior:**
    - New evaluation group: "Environmental Monitoring"
