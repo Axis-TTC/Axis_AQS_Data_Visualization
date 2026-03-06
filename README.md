@@ -36,7 +36,7 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
 ### Deploy the Stack
 
 ***Windows***
-1. Install [Docker](https://docs.docker.com/desktop/setup/install/windows-install/) and [Git](https://git-scm.com/install/windows) **(For the TTC workshop they are already installed on the workstation)**
+1. Install [Docker](https://docs.docker.com/desktop/setup/install/windows-install/) and [Git](https://git-scm.com/install/windows) ***(For the TTC workshop they are already installed on the workstation)***
 2. Clone the repo ```git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization```
 3. ```cd Axis_AQS_Data_Visualization```
 4. ```docker-compose -f docker-compose.ming.yml up -d```
@@ -54,9 +54,9 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
 
 | Service | URL | Credentials |
 |---------|-----|-------------|
-| **Grafana** | http://localhost:3000 | admin / password123 |
+| **Grafana** | http://localhost:3000 | `admin` / `password123` |
 | **Node-RED** | http://localhost:1880 | (none) |
-| **InfluxDB** | http://localhost:8086 | admin / password123 |
+| **InfluxDB** | http://localhost:8086 | `admin` / `password123` |
 | **MQTT Broker** | tcp://localhost:1883 | (none) |
 
 ---
@@ -67,9 +67,9 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
 
 **What happens:** Sensor publishes air quality data to MQTT every second.
 
-**(For the TTC workshop the D6310's are already configured, skip to the [Node-RED Flow](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization#2-configure-node-red-flow)**
+***For the TTC workshop the D6310's are already configured, skip to [2. Configure Node-RED Flow](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization#2-configure-node-red-flow)***
 1. Update Firmware to latest
-2. Configure MQTT (http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication)
+2. Configure MQTT `http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication`
    - Host: your computers IP
    - **Save** → **Connect**
 5. **+ Add Condition**
@@ -83,11 +83,12 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
 
 **What happens:** Node-RED subscribes to sensor MQTT topics, parses messages, writes structured data to InfluxDB.
 
-1. Open Node-RED: (http://localhost:1880)
-2. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
-3. Double click **Axis D6310 MQTT node**
-   - Change serial number in Topic to your device serial **(For the TTC workshop see list below)**
-   - **For the TTC workshop** click the pencil and change the broker URL to `mqtt.ttc.local`
+1. Open Node-RED: http://localhost:1880
+2. In the top right select the burger menu (☰) then **Import**
+3. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
+4. Double click **Axis D6310 MQTT node**
+   - Change the serial number in Topic to your device serial ***(For the TTC workshop see list below)***
+   - ***For the TTC workshop*** click the pencil (✎) and change the broker URL to `mqtt.ttc.local`
 
 **TTC Sensors (already publishing to mqtt.ttc.local)**  
 D6310 Play Space: E827251A7B8B  
@@ -95,12 +96,12 @@ D6310 Learn Space: E827251A7B09
 D6310 Server Rack: E827251AA4C6  
 D6310 Entrance: E827251A8AF7  
 
-4. In a new tab Open InfluxDB: `http://localhost:8086` (admin/password123)
+4. In a new tab open InfluxDB: http://localhost:8086 ( `admin` / `password123` )
    - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
    - Name it `nodered`
    - Copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
 10. Back in Node Red double click **InfluxDB Axis AQ** node
-    - Click pencil next to "Server"
+    - Click pencil (✎) next to "Server"
     - Paste Token in **Token** field
     - Click **Update** → **Done** → **Deploy**
 
@@ -110,7 +111,7 @@ D6310 Entrance: E827251A8AF7
 
 **What happens:** Check that sensor data is being written to the time-series database.
 
-1. Open InfluxDB: (http://localhost:8086) (admin/password123)
+1. Open InfluxDB: http://localhost:8086 ( `admin` / `password123` )
 2. On the left side click **Data Explorer**
    - Select **airquality**
    - Tick **air_quality**
@@ -128,11 +129,11 @@ D6310 Entrance: E827251A8AF7
 
 **What happens:** Connect Grafana to InfluxDB so it can query and visualize data.
 
-1. Open InfluxDB: `http://localhost:8086` (admin/password123)
+1. Open InfluxDB: http://localhost:8086 ( `admin` / `password123` )
 2. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
     - Name it `grafana`
     - Copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
-3. Open Grafana: (http://localhost:3000) (admin/password123)
+3. Open Grafana: http://localhost:3000 ( `admin` / `password123` )
 4. **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
    - Query language: Flux
    - URL: `http://influxdb:8086`
@@ -328,7 +329,7 @@ from(bucket: "airquality")
    - Token: `8x91i7sURTyiLT-Sv9kK8xyoTL7GOhRjxUZRgVeaXdVh-d7GoBOcmpUZWsvd2ZQ83VzZJDkZ-jjuUVI_uigDwQ==`
    - User: `admin` / Password: `password123`
 3. **Save & Test**
-4. In dashboards, change time range to **Last 7 days**
+4. Go back to your dashboard, change time range to **Last 7 days**
 5. Look for anomalies:
    - **CO2 spikes** → High occupancy events
    - **VOC increases** → Cleaning, new materials
