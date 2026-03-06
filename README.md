@@ -381,7 +381,7 @@ from(bucket: "airquality")
 **What happens:** Grafana monitors thresholds and publishes MQTT alert messages that Axis devices subscribe to, triggering actions (recordings, outputs, notifications).
 
 ```
-Grafana detects: VOC > 1000 ppb
+Grafana detects: VOC > 100
       ↓
 Sends MQTT message to: grafana/group1/alerts
       ↓
@@ -416,7 +416,7 @@ from(bucket: "airquality")
 4. **Alert condition:**
    - Reducer: **last** (use most recent value)
    - Threshold: **is above**
-   - Value: `1000` (ppb for VOC)
+   - Value: `100` (ppb for VOC)
 5. **Folder:** Create "Air Quality Alerts"
 6. **Evaluation behavior:**
    - New evaluation group: "Environmental Monitoring"
