@@ -15,7 +15,7 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 **M.I.N.G stack Docker Compose Deploy**:
 
 ***Windows***
-1. Install [Docker](https://docs.docker.com/desktop/setup/install/windows-install/) and [Git](https://git-scm.com/install/windows) **(For the TTC workshop this step is already done, start at step 2)**
+1. Install [Docker](https://docs.docker.com/desktop/setup/install/windows-install/) and [Git](https://git-scm.com/install/windows) **(For the TTC workshop they are already installed on the workstation)**
 2. Clone the repo ```git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization```
 3. ```cd Axis_AQS_Data_Visualization```
 4. ```docker-compose -f docker-compose.ming.yml up -d```
@@ -38,7 +38,7 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 ## Configuration
 
 ### D6310 
-**(For the TTC workshop this step is already done, skip to the Node-RED Flow)**
+**(For the TTC workshop the D6310 is already configured, skip to the Node-RED Flow)**
 1. Update Firmware to latest
 2. http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication
 3. Host: you computers IP
