@@ -1,6 +1,7 @@
 # Axis D6310 Air Quality M.I.N.G Stack
 
-Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
+Docker Compose **M.I.N.G** stack (MQTT, InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor.  
+Ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
 
 ---
 
