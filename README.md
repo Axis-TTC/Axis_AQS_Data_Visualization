@@ -88,11 +88,11 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
    - **Add**
 8. Take note of device serial for next step
 
-## TTC Sensors
-D6310 Play Space: E827251A7B8B
-D6310 Learn Space: E827251A7B09
-D6310 Server Rack: E827251AA4C6
-D6310 Entrance: E827251A8AF7
+### TTC Sensors (already publishing to mqqt.ttc.local)
+D6310 Play Space: E827251A7B8B  
+D6310 Learn Space: E827251A7B09  
+D6310 Server Rack: E827251AA4C6  
+D6310 Entrance: E827251A8AF7  
 
 ---
 
@@ -107,7 +107,7 @@ D6310 Entrance: E827251A8AF7
    - **For the TTC workshop** click the pencil and change the broker URL to `mqtt.ttc.local`
 4. In a new tab Open InfluxDB: `http://localhost:8086` (admin/password123)
    - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
-   - Name it anything
+   - Name it `nodered`
    - Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
 10. Back in Node Red double click **InfluxDB Axis AQ** node
     - Click pencil next to "Server"
@@ -140,7 +140,7 @@ D6310 Entrance: E827251A8AF7
 
 1. Open InfluxDB: `http://localhost:8086` (admin/password123)
 2. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
-    - Name it anything
+    - Name it `grafana`
     - Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
 3. Open Grafana: (http://localhost:3000) (admin/password123)
 4. **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
