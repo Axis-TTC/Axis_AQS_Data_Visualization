@@ -113,6 +113,8 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Temperature")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
+- Click **Query options** and change **Max data points** to `5000` this allows displaying more than one day of data.
+  
 ### To rename the sensors
 1. on the right hand side scroll all tha way to the bottom.
 2. Click **+ Add field override**
@@ -139,7 +141,8 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Humidity")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-
+- Click **Query options** and change **Max data points** to `5000` this allows displaying more than one day of data.
+  
 - **Back to dashboard**
 - **Add** → **Visualization**
 
@@ -156,7 +159,8 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "VOC")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-
+- Click **Query options** and change **Max data points** to `5000` this allows displaying more than one day of data.
+  
 - **Back to dashboard**
 - **Add** → **Visualization**
 
@@ -173,7 +177,8 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "CO2")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-
+- Click **Query options** and change **Max data points** to `5000` this allows displaying more than one day of data.
+  
 - **Back to dashboard**
 - **Add** → **Visualization**
 
@@ -190,7 +195,8 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "PM1" or r._field == "PM25" or r._field == "PM4" or r._field == "PM10")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-
+- Click **Query options** and change **Max data points** to `5000` this allows displaying more than one day of data.
+  
 - **Back to dashboard**
 - **Add** → **Visualization**
 
@@ -206,7 +212,8 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "AQI")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-
+- Click **Query options** and change **Max data points** to `5000` this allows displaying more than one day of data.
+  
 - **Back to dashboard**
 - **Add** → **Save Dashboard**
 
