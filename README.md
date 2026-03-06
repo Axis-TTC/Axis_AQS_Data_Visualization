@@ -6,9 +6,9 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 
 ## What This Stack Does
 
-```
-AXIS D6310 (Sensor) -> MQTT -> Node-RED (Flow) Transforms & Stores -> InfluxDB -> Grafana (Dashboard & Alerts)
-```
+
+AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (Stores) -> Grafana (Dashboard)
+
 
 ### Components Explained
 
