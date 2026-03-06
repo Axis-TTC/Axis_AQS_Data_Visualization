@@ -105,7 +105,7 @@ D6310 Entrance: E827251A8AF7
 
 ---
 
-## 3. Verify Data in InfluxDB
+### 3. Verify Data in InfluxDB
 
 **What happens:** Check that sensor data is being written to the time-series database.
 
