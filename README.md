@@ -209,7 +209,9 @@ from(bucket: "airquality")
 
 - **Back to dashboard**
 - **Add** → **Save Dashboard**
-  
+
+## For the TTC workshop go to [Task 2](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/Task_2.md)
+
 
 ## Troubleshooting
 
