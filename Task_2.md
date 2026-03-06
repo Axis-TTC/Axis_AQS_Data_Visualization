@@ -15,3 +15,5 @@ Password: `password123`
   
 - Go through the dashboards and look for anomalies in the data over the last week.
 You can then connect to the camera in that area and review the recordings on the SD card to see what happened.
+
+Go to [Task 3](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/Task_3.md)
