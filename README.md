@@ -56,7 +56,7 @@ Node-RED: `http://localhost:1880`
 - Open InfluxDB: `http://localhost:8086` (admin/password123)
 - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
 - Name it anything
-- Manauly copy the token (DO NOT CLICK "copy to clipboard" it doesnt always work)
+- Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
 - Back in Node Red double click **InfluxDB Axis AQ** node
 - Click pencil next to "Server"
 - Paste Token in **Token** field
