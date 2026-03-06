@@ -91,7 +91,7 @@ Grafana: `http://localhost:3000` (admin/password123)
 8. Open InfluxDB: `http://localhost:8086` (admin/password123)
 9. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
 10. Name it anything
-11. Manaul copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
+11. Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
 12. Paste Token in **Token** field
 13. **Save & Test**
 
