@@ -8,25 +8,25 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 
 ```
 ┌─────────────┐     MQTT      ┌──────────┐     Transforms    ┌──────────┐
-│ AXIS D6310  │ ────────────> │ Node-RED │ ───────────────> │ InfluxDB │
-│  (Sensor)   │   Messages    │  (Flow)  │    & Stores      │  (TSDB)  │
+│ AXIS D6310  │ ────────────> │ Node-RED │ ───────────────>  │ InfluxDB │
+│  (Sensor)   │   Messages    │  (Flow)  │      & Stores     │          │
 └─────────────┘               └──────────┘                   └──────────┘
                                                                     │
                                                                     │ Queries
                                                                     ▼
-                              ┌──────────┐                   ┌──────────┐
-                              │  Grafana │ <──────────────── │ InfluxDB │
-                              │(Dashboards                    └──────────┘
-                              │ & Alerts)│
-                              └──────────┘
-                                    │
-                                    │ MQTT Alerts
-                                    ▼
-                              ┌──────────┐
-                              │   Axis   │
-                              │  Device  │
-                              │ (Events) │
-                              └──────────┘
+                                                             ┌──────────┐                   
+                                                             │  Grafana │ 
+                                                             │(Dashboards                   
+                                                             │ & Alerts)│
+                                                             └──────────┘
+                                                                   │
+                                                                   │ MQTT Alerts
+                                                                   ▼
+                                                             ┌──────────┐
+                                                             │   Axis   │
+                                                             │  Device  │
+                                                             │ (Events) │
+                                                             └──────────┘
 ```
 
 ### Components Explained
