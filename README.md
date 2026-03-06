@@ -8,25 +8,26 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 - Grafana dashboard setup guide
 
 ## Prerequisites
-- Install and setup up [Docker](https://docs.docker.com/engine/install/)
+- Docker 
 - AXIS D6310 or two
 - Git for windows
 
 **M.I.N.G stack Docker Compose Deploy**:
 
 ***Windows***
-1. Install Docker Desktop (https://docs.docker.com/desktop/setup/install/windows-install/) and Git (https://git-scm.com/install/windows)
+1. Install [Docker](https://docs.docker.com/desktop/setup/install/windows-install/) and [Git](https://git-scm.com/install/windows) **(For the TTC workshop this step is already done, start at step 2)**
 2. Clone the repo ```git clone https://github.com/Axis-TTC/Axis_AQS_Data_Visualization```
 3. ```cd Axis_AQS_Data_Visualization```
 4. ```docker-compose -f docker-compose.ming.yml up -d```
    
 ***Linux***
-1. ```sudo apt install docker-compose```
-2. ```mkdir -p axis-aqs && cd axis-aqs```
-3. ```nano docker-compose.yml```
-4. Paste content of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
-5. Save and exit (control + x)
-6. ```sudo docker-compose up -d```
+1. Install [Docker](https://docs.docker.com/engine/install/)
+2. ```sudo apt install docker-compose```
+3. ```mkdir -p axis-aqs && cd axis-aqs```
+4. ```nano docker-compose.yml```
+5. Paste content of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
+6. Save and exit (control + x)
+7. ```sudo docker-compose up -d```
 
 **Access**:
 - Grafana: `http://localhost:3000` (admin/password123)
@@ -36,66 +37,68 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
   
 ## Configuration
 
-### D6310
-- Update Firmware to latest
-- http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication
-- Host: you computers IP
-- **Save** → **Connect**
-- **+ Add Condition**
-- Condition: Air quality monitoring active
-- **Add**
-- Take note of device serial for next step
+### D6310 
+**(For the TTC workshop this step is already done, skip to the Node-RED Flow)**
+1. Update Firmware to latest
+2. http://camera-ip/environmental-sensor/index.html#/system/mqtt/publication
+3. Host: you computers IP
+4. **Save** → **Connect**
+5. **+ Add Condition**
+6. Condition: Air quality monitoring active
+7. **Add**
+8. Take note of device serial for next step
 
 ### Node-RED Flow
 
 Node-RED: `http://localhost:1880`
 
-- Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
-- Double click **Axis D6310 MQTT node**
-- Change serial number in Topic to your device serial
-- Open InfluxDB: `http://localhost:8086` (admin/password123)
-- Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
-- Name it anything
-- Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
-- Back in Node Red double click **InfluxDB Axis AQ** node
-- Click pencil next to "Server"
-- Paste Token in **Token** field
-- Click **Update** → **Done** → **Deploy**
+1. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
+2. Double click **Axis D6310 MQTT node**
+3. Change serial number in Topic to your device serial
+4. **For the TTC workshop** click the pencil and change the broker URL to `mqtt.ttc.local`
+5. In a new tab Open InfluxDB: `http://localhost:8086` (admin/password123)
+6. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
+7. Name it anything
+8. Manauly copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
+9. Back in Node Red double click **InfluxDB Axis AQ** node
+10. Click pencil next to "Server"
+11. Paste Token in **Token** field
+12. Click **Update** → **Done** → **Deploy**
 
 ## InfluxDB
 
 InfluxDB: `http://localhost:8086` (admin/password123)
 
 Check that data is being stored
-- On the left side click **Data Explorer**
-- Select **airquality**
-- Tick **air_quality**
-- Tick one of the data types eg. AQI or CO2
-- Select **Past 1h** from the drop down
-- You should see data, if not go back to the Node-Red flow
+1. On the left side click **Data Explorer**
+2. Select **airquality**
+3. Tick **air_quality**
+4. Tick one of the data types eg. AQI or CO2
+5. Select **Past 1h** from the drop down
+6. You should see data, if not go back to the Node-Red flow
 
-## Grafana Queries (1m Resolution)
+## Grafana
 
 Grafana: `http://localhost:3000` (admin/password123)
 
 ### Add Data source
-- **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
-- Query language= Flux
-- URL: http://influxdb:8086
-- User: admin
-- Password: password123
-- Organization: iot
-- Open InfluxDB: `http://localhost:8086` (admin/password123)
-- Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
-- Name it anything
-- Manaul copy the token (copy to clipboard doesnt always work)
-- Paste Token in **Token** field
-- **Save & Test**
+1. **Connections** → **Data Sources** → **Add data source** → **InfluxDB**
+2. Query language= Flux
+3. URL: http://influxdb:8086
+4. User: admin
+5. Password: password123
+7. Organization: iot
+8. Open InfluxDB: `http://localhost:8086` (admin/password123)
+9. Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
+10. Name it anything
+11. Manaul copy the token (copy to clipboard doesnt always work)
+12. Paste Token in **Token** field
+13. **Save & Test**
 
 ## Add Dashboard
-- **Dashboards** → **Create dashboard**
-- **Add visualization**
-- Click **InfluxDB**
+1. **Dashboards** → **Create dashboard**
+2. **Add visualization**
+3. Click **InfluxDB**
 
 ### Temperature
 - Title: Temperature
@@ -110,15 +113,15 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Temperature")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-To rename the sensors
-- on the right hand side scroll all tha way to the bottom.
-- Click **+ Add field override**
-- Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
-- In the drop down select the sensor you want to change
-- Click **+ Add override property**
-- Select **Standard options > Display name**
-- Type the new name for the sensor
-- Repeat for other sensors
+### To rename the sensors
+1. on the right hand side scroll all tha way to the bottom.
+2. Click **+ Add field override**
+3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
+4. In the drop down select the sensor you want to change
+5. Click **+ Add override property**
+6. Select **Standard options > Display name**
+7. Type the new name for the sensor
+8. Repeat for other sensors
   
 - **Back to dashboard**
 - **Add** → **Visualization**
