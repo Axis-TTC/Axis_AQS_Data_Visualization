@@ -7,26 +7,19 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 ## What This Stack Does
 
 ```
-┌─────────────┐     MQTT      ┌──────────┐     Transforms    ┌──────────┐
-│ AXIS D6310  │ ────────────> │ Node-RED │ ───────────────>  │ InfluxDB │
-│  (Sensor)   │   Messages    │  (Flow)  │      & Stores     │          │
-└─────────────┘               └──────────┘                   └──────────┘
-                                                                    │
-                                                                    │ Queries
-                                                                    ▼
-                                                             ┌──────────┐                   
-                                                             │  Grafana │ 
-                                                             │(Dashboards                   
-                                                             │ & Alerts)│
-                                                             └──────────┘
-                                                                   │
-                                                                   │ MQTT Alerts
-                                                                   ▼
-                                                             ┌──────────┐
-                                                             │   Axis   │
-                                                             │  Device  │
-                                                             │ (Events) │
-                                                             └──────────┘
+┌─────────────┐     MQTT      ┌──────────┐     Transforms    ┌──────────┐       Queries     ┌──────────┐
+│ AXIS D6310  │ ────────────> │ Node-RED │ ───────────────>  │ InfluxDB │ ───────────────>  │  Grafana │ 
+│  (Sensor)   │   Messages    │  (Flow)  │      & Stores     │          │                   │(Dashboards  
+└─────────────┘               └──────────┘                   └──────────┘                   │ & Alerts)│
+                                                                                            └──────────┘
+                                                                                                 │ 
+                                                                                                 │ MQTT Alerts
+                                                                                                 ▼
+                                                                                            ┌──────────┐
+                                                                                            │   Axis   │
+                                                                                            │  Device  │
+                                                                                            │ (Events) │
+                                                                                            └──────────┘
 ```
 
 ### Components Explained
