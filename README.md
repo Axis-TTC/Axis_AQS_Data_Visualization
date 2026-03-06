@@ -192,7 +192,7 @@ Server Rack: E827251AA4C6
 Entrance: E827251A8AF7  
 
 - Click **Save Dashboard**
-- Change the Dashboard **Title** to `AQS`
+- Change the Dashboard **Title** to `Air Quality`
 - Click **Save**
 - Click **Back to dashboard**
 
