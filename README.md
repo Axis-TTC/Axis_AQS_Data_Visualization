@@ -8,7 +8,7 @@ Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana)
 - Grafana dashboard setup guide
 
 ## Prerequisites
-- Install and setup up [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
+- Install and setup up [Docker](https://docs.docker.com/engine/install/)
 - AXIS D6310 or two
 - Git for windows
 
