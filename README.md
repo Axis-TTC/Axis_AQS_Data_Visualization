@@ -1,11 +1,11 @@
 # Axis D6310 Air Quality M.I.N.G Stack
 
-Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Deploy via **Portainer**, ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
+Docker Compose **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-RED, Grafana) for **AXIS D6310** air quality sensor. Ingest MQTT data, visualize in Grafana. Perfect for smart buildings/IoT.
 
 ## Features
-- One-click Portainer stack deploy or simple Docker Compose
+- Simple Docker Compose
 - Node-RED MQTT flows (Axis → Influx)
-- Grafana dashboard
+- Grafana dashboard setup guide
 
 ## Prerequisites
 - Install and setup up [Docker](https://docs.docker.com/engine/install/) + [Portainer](https://docs.portainer.io/start/install-ce)
@@ -28,15 +28,6 @@ Docker Compose or portainer **M.I.N.G** stack (MQTT (Mosquitto), InfluxDB, Node-
 5. Save and exit (control + x)
 6. ```sudo docker-compose up -d```
 
-***OR***
-
-**M.I.N.G stack Portainer Deploy**:
-Portainer: https://localhost:9443/
-1. **Stacks** → **+ Add stack**
-2. Name: `axis-airquality`
-3. **Web editor** → Paste contents of [docker-compose.ming.yml](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/docker-compose.ming.yml)
-4. **Deploy stack**
-
 **Access**:
 - Grafana: `http://localhost:3000` (admin/password123)
 - Node-RED: `http://localhost:1880`
@@ -56,7 +47,9 @@ Portainer: https://localhost:9443/
 - Take note of device serial for next step
 
 ### Node-RED Flow
+
 Node-RED: `http://localhost:1880`
+
 - Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
 - Double click **Axis D6310 MQTT node**
 - Change serial number in Topic to your device serial
