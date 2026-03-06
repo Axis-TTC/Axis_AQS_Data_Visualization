@@ -151,6 +151,8 @@ D6310 Entrance: E827251A8AF7
 3. Select **InfluxDB**
 
 ### Temperature
+
+1. Click **Back** near the top right corner
 - Title: Temperature
 - Unit: Temperature → Celsius (°C)
 - Paste below into query field
@@ -176,21 +178,32 @@ from(bucket: "airquality")
 - Click **Query options** and change **Max data points** to `5000` 
   
 ### To rename the sensors
-1. on the right hand side scroll all tha way to the bottom.
+1. On the right hand side scroll all tha way to the bottom.
 2. Click **+ Add field override**
-3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
-4. In the drop down select the sensor you want to change
-5. Click **+ Add override property**
-6. Select **Standard options > Display name**
-7. Type the new name for the sensor
-8. Repeat for other sensors
-  
-- **Back to dashboard**
-- **Add** → **Visualization**
+3. Select **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device.
+4. Click **+ Add override property**
+5. Select **Standard options > Display name**
+6. Type the new name for the sensor
+7. Repeat for other sensors
+
+Play Space: E827251A7B8B  
+Learn Space: E827251A7B09  
+Server Rack: E827251AA4C6  
+Entrance: E827251A8AF7  
+
+- Click **Save Dashboard**
+- Change the Dashboard **Title** to `AQS`
+- Click **Save**
+- Click **Back to dashboard**
 
 ---
   
 ### Humidity
+
+1. Click the three dots in the top right of the **Tempreture** panel you just created
+2. Select **More* then **Duplicate**
+3. Click the three dots at the top right of the new panel that appears then select **Edit**
+
 - Title: Humidity
 - Unit: Misc → Percent (0-100)
 - Paste below into query field
@@ -203,25 +216,18 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "Humidity")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-### Increase Query Data Points (this allows displaying more than one day of data).
-- Click **Query options** and change **Max data points** to `5000` 
-  
-### To rename the sensors
-1. on the right hand side scroll all tha way to the bottom.
-2. Click **+ Add field override**
-3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
-4. In the drop down select the sensor you want to change
-5. Click **+ Add override property**
-6. Select **Standard options > Display name**
-7. Type the new name for the sensor
-8. Repeat for other sensors
-  
+
+- Click **Save Dashboard**
 - **Back to dashboard**
-- **Add** → **Visualization**
 
 ---
 
 ### VOC
+
+1. Click the three dots in the top right of the panel you just created
+2. Select **More* then **Duplicate**
+3. Click the three dots at the top right of the new panel that appears then select **Edit**
+
 - Title: VOC
 - Unit: Concentraion → parts-per-million (ppm)
 - Paste below into query field
@@ -234,25 +240,18 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "VOC")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-### Increase Query Data Points (this allows displaying more than one day of data).
-- Click **Query options** and change **Max data points** to `5000` 
-  
-### To rename the sensors
-1. on the right hand side scroll all tha way to the bottom.
-2. Click **+ Add field override**
-3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
-4. In the drop down select the sensor you want to change
-5. Click **+ Add override property**
-6. Select **Standard options > Display name**
-7. Type the new name for the sensor
-8. Repeat for other sensors
-  
+
+- Click **Save Dashboard**
 - **Back to dashboard**
-- **Add** → **Visualization**
 
 ---
 
 ### CO2
+
+1. Click the three dots in the top right of the panel you just created
+2. Select **More* then **Duplicate**
+3. Click the three dots at the top right of the new panel that appears then select **Edit**
+
 - Title: CO2
 - Units: Concentraion → parts-per-million (ppm)
 - Paste below into query field
@@ -265,25 +264,18 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "CO2")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-### Increase Query Data Points (this allows displaying more than one day of data).
-- Click **Query options** and change **Max data points** to `5000` 
-  
-### To rename the sensors
-1. on the right hand side scroll all tha way to the bottom.
-2. Click **+ Add field override**
-3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
-4. In the drop down select the sensor you want to change
-5. Click **+ Add override property**
-6. Select **Standard options > Display name**
-7. Type the new name for the sensor
-8. Repeat for other sensors
-  
+
+- Click **Save Dashboard**
 - **Back to dashboard**
-- **Add** → **Visualization**
 
 ---
 
 ### PM1, PM2.5, PM4, PM10
+
+1. Click the three dots in the top right of the panel you just created
+2. Select **More* then **Duplicate**
+3. Click the three dots at the top right of the new panel that appears then select **Edit**
+
 - Title: PM1, PM2.5, PM4, PM10
 - Units: Concentraion → micrograms per cubic meter (µg/m³)
 - Paste below into query field
@@ -296,25 +288,18 @@ from(bucket: "airquality")
   |> filter(fn: (r) => r._field == "PM1" or r._field == "PM25" or r._field == "PM4" or r._field == "PM10")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
-### Increase Query Data Points (this allows displaying more than one day of data).
-- Click **Query options** and change **Max data points** to `5000` 
-  
-### To rename the sensors
-1. on the right hand side scroll all tha way to the bottom.
-2. Click **+ Add field override**
-3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
-4. In the drop down select the sensor you want to change
-5. Click **+ Add override property**
-6. Select **Standard options > Display name**
-7. Type the new name for the sensor
-8. Repeat for other sensors
-  
+
+- Click **Save Dashboard**
 - **Back to dashboard**
-- **Add** → **Visualization**
 
 ---
 
 ### AQI
+
+1. Click the three dots in the top right of the panel you just created
+2. Select **More* then **Duplicate**
+3. Click the three dots at the top right of the new panel that appears then select **Edit**
+
 - Title: AQI
 - Paste below into query field
 
@@ -327,21 +312,8 @@ from(bucket: "airquality")
   |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
 ```
 
-### Increase Query Data Points (this allows displaying more than one day of data).
-- Click **Query options** and change **Max data points** to `5000` 
-  
-### To rename the sensors
-1. on the right hand side scroll all tha way to the bottom.
-2. Click **+ Add field override**
-3. Select **Fields with name** (alternativly you can use **Fields with name matching regex** and use the regex ```.*camera_id="E827251A7B09".*``` to match only to the serial of the device, this is useful when reusing overrides accross panels.
-4. In the drop down select the sensor you want to change
-5. Click **+ Add override property**
-6. Select **Standard options > Display name**
-7. Type the new name for the sensor
-8. Repeat for other sensors
-  
+- Click **Save Dashboard**
 - **Back to dashboard**
-- **Add** → **Visualization**
 
 ---
 
