@@ -77,12 +77,6 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
    - **Add**
 8. Take note of device serial for next step
 
-### TTC Sensors (already publishing to mqtt.ttc.local)
-D6310 Play Space: E827251A7B8B  
-D6310 Learn Space: E827251A7B09  
-D6310 Server Rack: E827251AA4C6  
-D6310 Entrance: E827251A8AF7  
-
 ---
 
 ### 2. Configure Node-RED Flow
@@ -92,8 +86,15 @@ D6310 Entrance: E827251A8AF7
 1. Open Node-RED: (http://localhost:1880)
 2. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
 3. Double click **Axis D6310 MQTT node**
-   - Change serial number in Topic to your device serial **(For the TTC workshop see list above)**
+   - Change serial number in Topic to your device serial **(For the TTC workshop see list below)**
    - **For the TTC workshop** click the pencil and change the broker URL to `mqtt.ttc.local`
+
+**TTC Sensors (already publishing to mqtt.ttc.local)**  
+D6310 Play Space: E827251A7B8B  
+D6310 Learn Space: E827251A7B09  
+D6310 Server Rack: E827251AA4C6  
+D6310 Entrance: E827251A8AF7  
+
 4. In a new tab Open InfluxDB: `http://localhost:8086` (admin/password123)
    - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
    - Name it `nodered`
