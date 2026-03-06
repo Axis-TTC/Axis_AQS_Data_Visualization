@@ -3,13 +3,13 @@
 - Edit your data source. (**Connections** → **Data Sources**)
 - Add the details below.
 
-URL: http://192.168.5.174:8086
+URL: `http://192.168.5.174:8086`
 
 API key: ```8x91i7sURTyiLT-Sv9kK8xyoTL7GOhRjxUZRgVeaXdVh-d7GoBOcmpUZWsvd2ZQ83VzZJDkZ-jjuUVI_uigDwQ==```
 
-User: admin
+User: `admin`
 
-Password: password123
+Password: `password123`
 
 - **Save & Test**
   
