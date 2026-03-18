@@ -325,8 +325,11 @@ from(bucket: "airquality")
 
 1. In Grafana: **Connections** → **Data Sources** → Edit existing or add new InfluxDB
 2. Configure historical database:
-   - URL: `http://10.129.174.38:8086`
-   - Token: `8x91i7sURTyiLT-Sv9kK8xyoTL7GOhRjxUZRgVeaXdVh-d7GoBOcmpUZWsvd2ZQ83VzZJDkZ-jjuUVI_uigDwQ==`
+   - URL: `http://influx.ttc.local`
+   - Token:
+```
+8x91i7sURTyiLT-Sv9kK8xyoTL7GOhRjxUZRgVeaXdVh-d7GoBOcmpUZWsvd2ZQ83VzZJDkZ-jjuUVI_uigDwQ==
+```
    - User: `admin` / Password: `password123`
 3. **Save & Test**
 4. Go back to your dashboard, change time range to **Last 7 days**
