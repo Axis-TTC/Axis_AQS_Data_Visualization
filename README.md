@@ -435,7 +435,7 @@ from(bucket: "airquality")
 | **Too many data points** | Increase **Max data points** to 5000-50000 in Query options |
 | **Alerts don't fire** | Check threshold value, preview alert condition, ensure data is flowing |
 | **Axis event doesn't trigger** | Verify MQTT subscription topic matches exactly, check event rule |
-| **Historical DB unreachable** | Confirm `10.129.174.38` is accessible, verify credentials |
+| **Historical DB unreachable** | Confirm `influx.ttc.local` is accessible, verify credentials |
 
 ---
 
