@@ -323,7 +323,7 @@ from(bucket: "airquality")
 
 **What happens:** Query a separate InfluxDB that has been collecting data for days/weeks to analyze trends and anomalies.
 
-1. In Grafana: **Connections** → **Data Sources** → Edit existing or add new InfluxDB
+1. In Grafana: **Connections** → **Data Sources** → Edit existing.
 2. Configure historical database:
    - URL: `http://influx.ttc.local`
    - Token:
