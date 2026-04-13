@@ -90,7 +90,7 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
    - Change the serial number in Topic to your device serial ***(For the TTC workshop see list below)***
    - ***For the TTC workshop*** click the pencil (✎) and change the broker URL to `10.129.174.38`
 
-**TTC Sensors (already publishing to mqtt.ttc.local)**  
+**TTC Sensors (already publishing to 10.129.174.38:1883)**  
 D6310 Play Space: E827251A7B8B  
 D6310 Learn Space: E827251A7B09  
 D6310 Server Rack: E827251AA4C6  
@@ -361,7 +361,7 @@ Triggers: Recording + Notification
 2. Configure:
    - Name: `MQTT Alerts`
    - Integration: **MQTT**
-   - Broker URL: `tcp://mqtt.ttc.local:1883`
+   - Broker URL: `tcp://10.129.174.38:1883`
    - Topic: `grafana/groupX/alerts` (replace `X` with your group number)
 3. **Save contact point**
 
@@ -393,7 +393,7 @@ from(bucket: "airquality")
 
 ### Step 3: Test with MQTT Explorer
 
-1. Open **MQTT Explorer** → Connect to `mqtt.ttc.local:1883`
+1. Open **MQTT Explorer** → Connect to `10.129.174.38:1883`
 2. Subscribe to `grafana/groupX/alerts`
 3. Trigger alert (exceed threshold or temporarily lower it)
 4. Wait 1-2 minutes → Alert messages appear in MQTT Explorer
@@ -401,7 +401,7 @@ from(bucket: "airquality")
 ### Step 4: Configure Axis Device Event
 
 1. Access Axis device web interface
-2. **System** → **MQTT** → Connect to `mqtt.ttc.local:1883`
+2. **System** → **MQTT** → Connect to `10.129.174.38:1883`
 3. Add MQTT subscription: `grafana/groupX/alerts`
 4. **System** → **Events** → **Device events** → **Add rule**
 5. Configure:
@@ -435,7 +435,7 @@ from(bucket: "airquality")
 | **Too many data points** | Increase **Max data points** to 5000-50000 in Query options |
 | **Alerts don't fire** | Check threshold value, preview alert condition, ensure data is flowing |
 | **Axis event doesn't trigger** | Verify MQTT subscription topic matches exactly, check event rule |
-| **Historical DB unreachable** | Confirm `influx.ttc.local` is accessible, verify credentials |
+| **Historical DB unreachable** | Confirm `http://10.129.174.38:8086` is accessible, verify credentials |
 
 ---
 
