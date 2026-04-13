@@ -88,7 +88,7 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
 3. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
 4. Double click **Axis D6310 MQTT node**
    - Change the serial number in Topic to your device serial ***(For the TTC workshop see list below)***
-   - ***For the TTC workshop*** click the pencil (✎) and change the broker URL to `mqtt.ttc.local`
+   - ***For the TTC workshop*** click the pencil (✎) and change the broker URL to `10.129.174.38`
 
 **TTC Sensors (already publishing to mqtt.ttc.local)**  
 D6310 Play Space: E827251A7B8B  
@@ -323,9 +323,9 @@ from(bucket: "airquality")
 
 **What happens:** Query a separate InfluxDB that has been collecting data for days/weeks to analyze trends and anomalies.
 
-1. In Grafana: **Connections** → **Data Sources** → Edit existing.
+1. In Grafana: **Connections** → **Data Sources** → Edit your existing one.
 2. Configure historical database:
-   - URL: `http://influx.ttc.local`
+   - URL: `http://10.129.174.38:8086`
    - Token:
 ```
 8x91i7sURTyiLT-Sv9kK8xyoTL7GOhRjxUZRgVeaXdVh-d7GoBOcmpUZWsvd2ZQ83VzZJDkZ-jjuUVI_uigDwQ==
