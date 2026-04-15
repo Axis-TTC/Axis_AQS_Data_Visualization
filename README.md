@@ -412,6 +412,12 @@ from(bucket: "airquality")
 
 ---
 
+## Reset
+
+(This will delete all your dashboards and data.)
+
+When you are done, you can remove everything with the [Reset_Workshop.bat](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/Reset_Workshop.bat) script.
+
 ## Reference
 
 ### Recommended Alert Thresholds
