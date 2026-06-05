@@ -83,27 +83,226 @@ AXIS D6310 (Sensor) -> MQTT (Transmits) -> Node-RED (Transforms) -> InfluxDB (St
 
 **What happens:** Node-RED subscribes to sensor MQTT topics, parses messages, writes structured data to InfluxDB.
 
-1. Open Node-RED: http://localhost:1880
-2. In the top right select the burger menu (☰) then **Import**
-3. Import flow from [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json)
-4. Double click **Axis D6310 MQTT node**
-   - Change the serial number in Topic to your device serial ***(For the TTC workshop see list below)***
-   - ***For the TTC workshop*** click the pencil (✎) and change the broker URL to `10.129.174.38`
+The flow you will build looks like this:
+
+```
+[MQTT in: Axis D6310 MQTT] ──► [Function: Parse Axis JSON] ──┬──► [InfluxDB out: InfluxDB Axis AQ]
+                                                              └──► [Debug: Debug parsed data]
+```
 
 **TTC Sensors (already publishing to 10.129.174.38:1883)**  
-D6310 Play Space: E827251A7B8B  
-D6310 Learn Space: E827251A7B09  
-D6310 Server Rack: E827251AA4C6  
-D6310 Entrance: E827251A8AF7  
+D6310 Play Space: `E827251A7B8B`  
+D6310 Learn Space: `E827251A7B09`  
+D6310 Server Rack: `E827251AA4C6`  
+D6310 Entrance: `E827251A8AF7`
 
-4. In a new tab open InfluxDB: http://localhost:8086 ( `admin` / `password123` )
-   - Click **Load Data** → **API Tokens** → **Generate API Token** → **All Access API Token**
-   - Name it `nodered`
-   - Copy the token (**DO NOT CLICK** "copy to clipboard" it doesnt always work)
-10. Back in Node Red double click **InfluxDB Axis AQ** node
-    - Click pencil (✎) next to "Server"
-    - Paste Token in **Token** field
-    - Click **Update** → **Done** → **Deploy**
+---
+
+#### 2.1 Open Node-RED and install the InfluxDB palette
+
+The default Node-RED image does not ship with the InfluxDB output node, so you need to add it once.
+
+1. Open Node-RED: http://localhost:1880
+2. Top right burger menu (☰) → **Manage palette**
+3. Select the **Install** tab
+4. Search for `node-red-contrib-influxdb`
+5. Click **install** next to the matching entry → confirm **Install**
+6. Wait for the green "added nodes" message, then **Close**
+
+![Install the InfluxDB palette](docs/images/02-1-install-palette.png)
+
+---
+
+#### 2.2 Add and configure the MQTT in node
+
+This node subscribes to one sensor's MQTT topic.
+
+1. From the **network** category in the left palette, drag a **mqtt in** node onto the workspace
+2. Double click the node to open its config panel
+3. **Server** field → click the pencil (✎) to create a new broker
+   - **Name:** `TTC Broker`
+   - **Server:** `10.129.174.38` ***(for the TTC workshop)***
+     - If you are running everything locally instead, use `mosquitto`
+   - **Port:** `1883`
+   - Leave everything else at its default
+   - Click **Add**
+
+![Broker configuration](docs/images/02-2-broker-config.png)
+
+4. **Action:** `Subscribe to single topic`
+5. **Topic:** `axis/<SERIAL>/event/tns:axis/AirQualityMonitor/Metadata/#`
+   - Replace `<SERIAL>` with your assigned TTC sensor serial from the list above
+   - Example for the Learn Space sensor: `axis/E827251A7B09/event/tns:axis/AirQualityMonitor/Metadata/#`
+6. **QoS:** `0`
+7. **Output:** `auto-detect (parsed JSON object, string or buffer)`
+8. **Name:** `Axis D6310 MQTT`
+9. Click **Done**
+
+![MQTT in node configuration](docs/images/02-3-mqtt-in-config.png)
+
+---
+
+#### 2.3 Add and configure the Parse Axis JSON function node
+
+This node reshapes the raw Axis JSON into the array format the InfluxDB out node expects (`[fields, tags]`).
+
+1. From the **function** category, drag a **function** node onto the workspace, to the right of the MQTT in node
+2. Double click to open it
+3. **Name:** `Parse Axis JSON`
+4. Select the **On Message** tab
+5. Replace any starter code with the block below
+
+What this code does:
+- Reads `msg.payload` (the parsed Axis JSON) and `msg.topic` (the full MQTT topic)
+- Pulls the sensor serial out of the topic so it can be stored as a tag
+- Builds the two-element array InfluxDB v2 expects: fields first (the numeric measurements), tags second (`sensor_name`, `camera_id`)
+- Sets `msg.measurement = "air_quality"` so all rows land in the same measurement
+
+```js
+// From MQTT In: msg.payload = raw JSON, msg.topic = full Axis topic
+const fullTopic = msg.topic;
+const rawPayload = msg.payload;
+
+// Safe extraction - handles variations in Axis JSON
+const data = rawPayload.data || rawPayload.message?.data || rawPayload;
+const ts = rawPayload.timestamp || Date.now();
+const sensorName = fullTopic.split('/').pop() || 'unknown';  // "D6310"
+const cameraId = fullTopic.split('/')[1] || 'unknown';
+
+// InfluxDB v2 array format: [fields, tags]
+msg.measurement = "air_quality";
+msg.payload = [
+  {  // FIELDS first
+    PM25: Number(data['PM2.5'] || 0),
+    PM10: Number(data['PM10.0'] || 0),
+    PM1: Number(data['PM1.0'] || 0),
+    PM4: Number(data['PM4.0'] || 0),
+    NOx: Number(data['NOx'] || 0),
+    VOC: Number(data['VOC'] || 0),
+    AQI: Number(data['AQI'] || 0),
+    Temperature: Number(data['Temperature'] || 0),
+    Humidity: Number(data['Humidity'] || 0),
+    CO2: Number(data['CO2'] || 0)
+  },
+  {  // TAGS second
+    sensor_name: sensorName,
+    camera_id: cameraId
+  }
+];
+
+return msg;
+```
+
+6. Leave **Outputs** at `1`
+7. Click **Done**
+8. Wire the MQTT in node's output port to the function node's input port (click and drag from the small grey square on the right of the MQTT node to the one on the left of the function node)
+
+![Parse Axis JSON function node](docs/images/02-4-function-node.png)
+
+---
+
+#### 2.4 Generate an InfluxDB API token
+
+The InfluxDB out node needs a token to authenticate.
+
+1. In a new tab open InfluxDB: http://localhost:8086 ( `admin` / `password123` )
+2. Left sidebar → **Load Data** → **API Tokens**
+3. **Generate API Token** → **All Access API Token**
+4. **Description:** `nodered`
+5. Click **Save**
+6. Click the token you just created to reveal it
+7. Select the token text and copy it manually with `Ctrl+C` (**DO NOT CLICK** the "copy to clipboard" button, it does not always work)
+
+Keep this tab open, you will need it again for Grafana later.
+
+---
+
+#### 2.5 Add and configure the InfluxDB out node
+
+This node writes each parsed message into the `airquality` bucket.
+
+1. Back in Node-RED, from the **storage** category, drag an **influxdb out** node onto the workspace, to the right of the function node
+2. Double click to open it
+3. **Server** field → click the pencil (✎) to create a new InfluxDB connection
+   - **Version:** `2.0 Flux`
+   - **URL:** `http://influxdb:8086`
+   - **Token:** paste the token you copied in 2.4
+   - **Organization:** `iot`
+   - **Name:** `influx`
+   - Click **Add**
+
+![InfluxDB server connection](docs/images/02-5-influxdb-server.png)
+
+4. Back on the node settings:
+   - **Organization:** `iot`
+   - **Bucket:** `airquality`
+   - **Measurement:** leave **blank** (the function node sets it via `msg.measurement`)
+   - **Name:** `InfluxDB Axis AQ`
+5. Click **Done**
+6. Wire the function node's output to the InfluxDB out node's input
+
+![InfluxDB out node configuration](docs/images/02-6-influxdb-out.png)
+
+---
+
+#### 2.6 Add a Debug node
+
+This lets you see parsed messages in the right-hand debug sidebar so you can confirm data is flowing.
+
+1. From the **common** category, drag a **debug** node onto the workspace, below the InfluxDB out node
+2. Double click to open it
+3. **Output:** `msg.payload`
+4. **To:** tick **debug window**
+5. **Name:** `Debug parsed data`
+6. Click **Done**
+7. Wire the function node's output to the debug node's input as well (the function node output can drive both the InfluxDB out and the debug node)
+
+![Debug node configuration](docs/images/02-7-debug-node.png)
+
+---
+
+#### 2.7 Deploy and verify
+
+1. Click the red **Deploy** button in the top right
+2. Under each node you should see a small green dot with `connected`
+3. Open the **debug** sidebar (the bug icon on the right)
+4. Within a few seconds you should see parsed payload objects appearing with `PM25`, `CO2`, `Temperature`, `Humidity`, etc.
+
+![Deployed flow with all nodes connected](docs/images/02-8-deployed-flow.png)
+
+Expand a debug message to confirm the parsed fields and tags:
+
+![Live parsed data in the debug sidebar](docs/images/02-9-debug-live-data.png)
+
+If nothing appears:
+- Re-check the topic serial matches your assigned sensor
+- Re-check the broker host (`10.129.174.38` for the workshop)
+- Re-check the InfluxDB token, organization (`iot`), and bucket (`airquality`)
+
+---
+
+#### 2.8 Duplicate the MQTT in node for the other TTC sensors
+
+To ingest from all four TTC sensors, you only need to duplicate the MQTT in node, not the rest of the flow.
+
+1. Click the **Axis D6310 MQTT** node to select it
+2. Press `Ctrl+C` then `Ctrl+V` (or right click → **Copy**, then **Paste**) to create a copy
+3. Double click the new node and change only the serial in **Topic** to the next sensor from the list
+4. Click **Done**
+5. Wire the new node's output to the existing **Parse Axis JSON** function node
+6. Repeat for the remaining sensors so you have four MQTT in nodes, all feeding the same Parse Axis JSON node
+7. Click **Deploy**
+
+---
+
+#### Fallback: import the prebuilt flow
+
+If you fall behind, you can import the finished flow instead and just update the broker and InfluxDB token.
+
+1. Top right burger menu (☰) → **Import**
+2. Paste the contents of [aqs_to_influx.json](https://github.com/Axis-TTC/Axis_AQS_Data_Visualization/blob/main/aqs_to_influx.json) and click **Import**
+3. Update the MQTT broker host and topic serials, and the InfluxDB token, as described in 2.2 and 2.5 above
+4. Click **Deploy**
 
 ---
 
