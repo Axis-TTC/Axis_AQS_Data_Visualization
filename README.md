@@ -350,6 +350,7 @@ If you fall behind, you can import the finished flow instead and just update the
 
 1. In Grafana click **Dashboards** → **Create dashboard** → **Add visualization**
 3. Select **InfluxDB**
+4. Select **Time Series**
 
 ### Temperature
 
