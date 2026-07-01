@@ -223,7 +223,7 @@ This node writes each parsed message into the `airquality` bucket.
 
 1. Back in Node-RED, from the **storage** category, drag an **influxdb out** node onto the workspace, to the right of the function node
 2. Double click to open it
-3. **Server** field → click the pencil (✎) to create a new InfluxDB connection
+3. **Server** field → click the add button (+) to create a new InfluxDB connection
    - **Version:** `2.0 Flux`
    - **URL:** `http://influxdb:8086`
    - **Token:** paste the token you copied in 2.4
